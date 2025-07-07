@@ -12,6 +12,7 @@ sap.ui.define([
     "sap/m/MessagePopover",
     "sap/m/MessagePopoverItem",
     "production/model/formatter"
+    
 ],
     function (Controller, JSONModel, BarcodeScanner, ResourceModel, MessageToast, MessageBox,
         Fragment, Filter, FilterOperator, SearchField,
