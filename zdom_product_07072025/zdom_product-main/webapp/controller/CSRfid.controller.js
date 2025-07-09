@@ -217,10 +217,8 @@ sap.ui.define([
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     });
                                 }).finally(function (info) {
-                                    //let sId = this.getView().getModel("WoutJSON").getProperty("/IDButtonRFID");
-                                    //let that = this;
                                     setTimeout(() => {
-                                        this.FocusInput();
+                                        this.focusInput();
                                     }, 500);
                                 }.bind(this))
 
@@ -245,13 +243,11 @@ sap.ui.define([
                 );
             },
 
-            FocusInput: function () {
-                //setTimeout(() => {
-
+            focusInput: function () {
                 this.getFragment("RFIDDialog").then(function (oFragment) {
-                    var aRFIDLine = this.getView().getModel("WoutJSON").getProperty("/RFIDTable");
+                    let lastTableInput = oFragment.getContent()[0].getItems().pop();
+                    lastTableInput.getCells()[1].getItems()[0].focus();
                 });
-
                 //document.getElementById('__input7-application-production-display-component---CSRfid--id_TableRFID-1').focus();
                 //}, 500);
             },
