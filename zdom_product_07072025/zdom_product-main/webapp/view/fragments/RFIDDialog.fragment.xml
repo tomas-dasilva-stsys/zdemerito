@@ -9,7 +9,7 @@
 					<OverflowToolbar>
 						<Title text="{i18n>textTitleScanMaterial}" level="H2" />
 						<ToolbarSpacer />
-						<Button text="+" type="Transparent" press="onAppend" />
+						<!-- <Button text="+" type="Transparent" press="onAppend" /> -->
 						<Button text="-" type="Transparent" press="onDelete" />
 					</OverflowToolbar>
 				</headerToolbar>
