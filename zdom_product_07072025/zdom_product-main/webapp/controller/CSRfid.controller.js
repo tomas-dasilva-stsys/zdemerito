@@ -219,8 +219,8 @@ sap.ui.define([
                                 }).finally(function (info) {
                                     setTimeout(() => {
                                         this.focusInput();
-                                    }, 500);
-                                }.bind(this))
+                                    }, 250);
+                                }.bind(this));
 
                                 // var sPathRFID = "/RFIDTable/" + sPosRFID[0] + "/Rfid";
                                 // var sPathCant = "/RFIDTable/" + sPosRFID[0] + "/Cantidad";
@@ -355,7 +355,11 @@ sap.ui.define([
                         this.getFragment("RFIDDialog").then(function (oFragment) {
                             oFragment.getModel().setProperty(sPath, aRFIDLine);
                         });
+    
+                    }                    
+
                     }
+
                 }.bind(this)).catch((oError) => {
                     var JSError = JSON.parse(oError.responseText);
                     var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
@@ -363,9 +367,13 @@ sap.ui.define([
                     MessageBox.error(sMensaje, {
                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                     });
-                }).finally(function (info) {
 
-                })
+                }).finally(function (info) {
+                    setTimeout(() => {
+                        this.focusInput();                        
+                    }, 250);
+                   
+                }.bind(this));
             },
 
             onCheckMatnrRFID: function (oEvent) {
