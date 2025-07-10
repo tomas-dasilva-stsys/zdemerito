@@ -12,7 +12,7 @@ sap.ui.define([
     "sap/m/MessagePopover",
     "sap/m/MessagePopoverItem",
     "production/model/formatter"
-    
+
 ],
     function (Controller, JSONModel, BarcodeScanner, ResourceModel, MessageToast, MessageBox,
         Fragment, Filter, FilterOperator, SearchField,
@@ -169,16 +169,65 @@ sap.ui.define([
 
             onScanAgregar: function (oEvent) {
                 var arrayDeCadenas = oEvent.getSource().getId().split('-');
+                this.getView().getModel("WoutJSON").setProperty("/IDButtonRFID", oEvent.getSource().getId());
                 sPosRFID = $.extend(true, {}, arrayDeCadenas[arrayDeCadenas.length - 1]);
                 sap.ndc.BarcodeScanner.scan(
                     function (mResult) {
                         if (!mResult.cancelled) {
                             var sCheck = this.validateRFID(mResult.text, sPosRFID[0]);
                             if (sCheck === true) {
-                                var sPathRFID = "/RFIDTable/" + sPosRFID[0] + "/Rfid";
-                                var sPathCant = "/RFIDTable/" + sPosRFID[0] + "/Cantidad";
-                                this.getView().getModel("WoutJSON").setProperty(sPathRFID, mResult.text);
-                                this.getView().getModel("WoutJSON").setProperty(sPathCant, parseInt(sPosRFID[0]) + 1);
+
+                                let sLgnum = this.getView().getModel("WoutJSON").getProperty("/Plant");
+                                var sPath = "/CheckRFID";
+
+                                var oParameter =
+                                {
+                                    "RFID": mResult.text,
+                                    "Werks": sLgnum
+                                };
+
+                                this.GetFunctionImport(sPath, oParameter).then(function (oData) {
+                                    if (oData.Type == 'E') {
+                                        var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                        let sMensaje = oData.Message;
+                                        MessageBox.error(sMensaje, {
+                                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                        });
+                                    } else {
+                                        var sPathRFID = "/RFIDTable/" + sPosRFID[0] + "/Rfid";
+                                        var sPathCant = "/RFIDTable/" + sPosRFID[0] + "/Cantidad";
+                                        this.getView().getModel("WoutJSON").setProperty(sPathRFID, mResult.text);
+                                        this.getView().getModel("WoutJSON").setProperty(sPathCant, parseInt(sPosRFID[0]) + 1);
+                                        var InitRFID = $.extend(true, {}, this.getInitRFIDTable());
+                                        var aRFIDLine = this.getView().getModel("WoutJSON").getProperty("/RFIDTable");
+                                        aRFIDLine.push(InitRFID);
+
+                                        this.getFragment("RFIDDialog").then(function (oFragment) {
+                                            oFragment.getModel().setProperty('/RFIDTable', aRFIDLine);
+                                        });
+                                        //let sId = this.getView().getModel("WoutJSON").getProperty("/IDButtonRFID");
+                                        //this.byId(sId).focus();
+
+                                    }
+                                }.bind(this)).catch((oError) => {
+                                    var JSError = JSON.parse(oError.responseText);
+                                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                    var sMensaje = JSError.error.message.value;
+                                    MessageBox.error(sMensaje, {
+                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                    });
+                                }).finally(function (info) {
+                                    setTimeout(() => {
+                                        this.focusInput();
+                                    }, 250);
+                                }.bind(this));
+
+                                // var sPathRFID = "/RFIDTable/" + sPosRFID[0] + "/Rfid";
+                                // var sPathCant = "/RFIDTable/" + sPosRFID[0] + "/Cantidad";
+                                // this.getView().getModel("WoutJSON").setProperty(sPathRFID, mResult.text);
+                                // this.getView().getModel("WoutJSON").setProperty(sPathCant, parseInt(sPosRFID[0]) + 1);
+
+
                             } else {
                                 var sMensaje = oResourceBundle.getText("textMessageRFIDRep");
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
@@ -192,6 +241,15 @@ sap.ui.define([
 
                     }.bind(this)
                 );
+            },
+
+            focusInput: function () {
+                this.getFragment("RFIDDialog").then(function (oFragment) {
+                    let lastTableInput = oFragment.getContent()[0].getItems().pop();
+                    lastTableInput.getCells()[1].getItems()[0].focus();
+                });
+                //document.getElementById('__input7-application-production-display-component---CSRfid--id_TableRFID-1').focus();
+                //}, 500);
             },
 
             onRFIDRead: function () {
@@ -258,13 +316,78 @@ sap.ui.define([
                 });
             },
 
+            chechkRFID(iRFID) {
+                //let sRFID = oEvent.getParameters().value;
+                let sRFID = iRFID;
+                this.getView().getModel("WoutJSON").setProperty("/RFIDSelect", sRFID);
+                let sLgnum = this.getView().getModel("WoutJSON").getProperty("/Plant");
+                var sPath = "/CheckRFID";
+
+                var oParameter =
+                {
+                    "RFID": sRFID,
+                    "Werks": sLgnum
+                };
+
+                var sBusy = oResourceBundle.getText('textProcessingSave');
+                var busyDialog4 = (sap.ui.getCore().byId("busy4")) ? sap.ui.getCore().byId("busy4") : new sap.m.BusyDialog('busy4', {
+                    title: sBusy
+                });
+                //busyDialog4.open();
+
+                this.GetFunctionImport(sPath, oParameter).then(function (oData) {
+                    if (oData.Type == 'E') {
+                        let sRfidSelect = this.getView().getModel("WoutJSON").getProperty("/RFIDSelect");
+                        let aTableOrg = this.getView().getModel("WoutJSON").getProperty("/RFIDTable");
+                        let sRFID = aTableOrg.find(({ Rfid }) => Rfid === sRfidSelect);
+                        let iPos = parseInt(sRFID.Cantidad) - 1;
+                        let sPos = "/RFIDTable/" + iPos;
+                        sRFID.Rfid = '';
+                        sRFID.Cantidad = '';
+                        this.getView().getModel("WoutJSON").setProperty(sPos, sRFID);
+
+                        var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                        let sMensaje = oData.Message;
+                        //busyDialog4.close();
+                        MessageBox.error(sMensaje, {
+                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                        });
+                    } else {
+                        var InitRFID = $.extend(true, {}, this.getInitRFIDTable());
+                        //var sPath = "/RFIDTable";
+                        //var aRFIDLine = oEvent.getSource().getBindingContext().getProperty(sPath);
+                        var aRFIDLine = this.getView().getModel("WoutJSON").getProperty("/RFIDTable");
+                        aRFIDLine.push(InitRFID);
+
+                        this.getFragment("RFIDDialog").then(function (oFragment) {
+                            oFragment.getModel().setProperty(sPath, aRFIDLine);
+                        });
+                        //busyDialog4.close();
+                    }                    
+                }.bind(this)).catch((oError) => {
+                    var JSError = JSON.parse(oError.responseText);
+                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                    var sMensaje = JSError.error.message.value;
+                    MessageBox.error(sMensaje, {
+                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                    });
+                    //busyDialog4.close();
+                }).finally(function (info) {
+                    setTimeout(() => {
+                        this.focusInput();                        
+                    }, 250);
+                    //busyDialog4.close();
+                }.bind(this));
+            },
+
             onCheckMatnrRFID: function (oEvent) {
                 var sId = oEvent.getParameters().id;
                 var oFiled = sId.split("-");
                 var sPos = oFiled[oFiled.length - 1];
                 var sCheck = this.validateRFID(oEvent.getSource().getValue(), sPos);
-                if (sCheck === true) {
 
+                if (sCheck === true) {
+                    this.chechkRFID(oEvent.getParameters().value);
                 } else {
                     var sId = oEvent.getParameters().id;
                     var oFiled = sId.split("-");
@@ -302,36 +425,43 @@ sap.ui.define([
             },
 
             onAceptarRFID: function (oEvent) {
-                var oTable = this.byId("id_TableRFID");
-                var aTable = oTable.getSelectedContextPaths();
-                var oList = oEvent.getSource();
 
-                var aTableRFID = oEvent.getSource().getBindingContext().getProperty("/RFIDTable");
-                var aTableOK = [];
+                let that = this;
 
-                if (aTableRFID.length) {
+                this._debounceTimer = setTimeout(function () {
 
-                    for (var i = 0; i < aTableRFID.length; i++) {
-                        if (aTableRFID[i].Rfid) {
-                            var sTableRFID = $.extend(true, {}, aTableRFID[i]);
-                            aTableOK.push(sTableRFID);
+                    //var oTable = this.byId("id_TableRFID");
+                    //var aTable = oTable.getSelectedContextPaths();
+                    var oList = oEvent.getSource();
+
+                    var aTableRFID = oEvent.getSource().getBindingContext().getProperty("/RFIDTable");
+                    var aTableOK = [];
+
+                    if (aTableRFID.length) {
+
+                        for (var i = 0; i < aTableRFID.length; i++) {
+                            if (aTableRFID[i].Rfid) {
+                                var sTableRFID = $.extend(true, {}, aTableRFID[i]);
+                                aTableOK.push(sTableRFID);
+                            }
+                        }
+
+                        if (aTableOK.length) {
+                            var sSelect = aTableOK[aTableOK.length - 1];
+                            //this.getView().getModel("WoutJSON").setProperty('/RFIDCont', sSelect.Cantidad);
+                            that.getView().getModel("WoutJSON").setProperty('/RFIDCont', aTableOK.length);
+                        } else {
+                            that.getView().getModel("WoutJSON").setProperty('/RFIDCont', 0);
                         }
                     }
 
-                    if (aTableOK.length) {
-                        var sSelect = aTableOK[aTableOK.length - 1];
-                        //this.getView().getModel("WoutJSON").setProperty('/RFIDCont', sSelect.Cantidad);
-                        this.getView().getModel("WoutJSON").setProperty('/RFIDCont', aTableOK.length);
-                    } else {
-                        this.getView().getModel("WoutJSON").setProperty('/RFIDCont', 0);
-                    }
-                }
+                    that.getFragment("RFIDDialog").then(function (oFragment) {
+                        oFragment.close();
+                    });
 
-                this.getFragment("RFIDDialog").then(function (oFragment) {
-                    oFragment.close();
-                });
+                    that.handleEnabledSaveBtn();
 
-                this.handleEnabledSaveBtn();
+                }, 1000);
             },
 
             // Inic. Fragmentos
@@ -505,7 +635,7 @@ sap.ui.define([
                     }
                 } */
 
-                let sPos = oEvent.getSource().getSelectedIndex();                
+                let sPos = oEvent.getSource().getSelectedIndex();
                 var sPacknoKey = aPalletType[sPos].Position;
                 var sQuantity = aPalletType[sPos].Quantity;
                 var sverid = aPalletType[sPos].verid;
@@ -603,7 +733,7 @@ sap.ui.define([
                                 sPalletType.Position = sResutl.packnrT;
                                 sPalletType.Embalaje = sResutl.matnr1;
                                 sPalletType.Quantity = sResutl.trgqty;
-                                sPalletType.verid = sResutl.verid;                                
+                                sPalletType.verid = sResutl.verid;
                                 aPalletType.push($.extend(true, {}, sPalletType));
                             } else {
                                 var sResutl = $.extend(true, {}, oData.results[i]);
@@ -1162,7 +1292,7 @@ sap.ui.define([
                     "Lgnum": sLgnum
                 };
 
-                this.getSernrBack(sPath, oParameter).then(function (oData) {
+                this.GetFunctionImport(sPath, oParameter).then(function (oData) {
                     this.getView().getModel("WoutJSON").setProperty("/SernrUm", oData.Sernr);
                     this.getView().getModel("WoutJSON").setProperty("/BatchUm", oData.Batch);
                     this.getView().getModel('ViewJSON').setProperty('/SaveBtnEnabled', true);
@@ -1179,7 +1309,7 @@ sap.ui.define([
                 })
             },
 
-            getSernrBack: function (sPath, oParameter) {
+            GetFunctionImport: function (sPath, oParameter) {
                 return new Promise(function (resolve, reject) {
                     this.getView().getModel("ZDOM_0000_SRV_01").callFunction(sPath, {
                         method: "GET",
@@ -1391,13 +1521,13 @@ sap.ui.define([
 
                 var sPath = "/ZFI_CHECK_AVAILABLE_STOCK";
                 var iQuantity = parseInt(sQuantity).toFixed(3)
-                var oParameter = 
-                { 
-                    "Aufnr": sAufnr, 
-                    "Quantity": iQuantity, 
-                    "Werks":  sWerks,
-                    "Matnr":  sMatnr,
-                    "Packnr":  sPacknr,
+                var oParameter =
+                {
+                    "Aufnr": sAufnr,
+                    "Quantity": iQuantity,
+                    "Werks": sWerks,
+                    "Matnr": sMatnr,
+                    "Packnr": sPacknr,
                 };
 
                 return new Promise(function (resolve, reject) {
