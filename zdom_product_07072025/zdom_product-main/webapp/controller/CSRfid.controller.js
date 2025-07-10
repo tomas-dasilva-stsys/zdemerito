@@ -329,12 +329,6 @@ sap.ui.define([
                     "Werks": sLgnum
                 };
 
-                var sBusy = oResourceBundle.getText('textProcessingSave');
-                var busyDialog4 = (sap.ui.getCore().byId("busy4")) ? sap.ui.getCore().byId("busy4") : new sap.m.BusyDialog('busy4', {
-                    title: sBusy
-                });
-                //busyDialog4.open();
-
                 this.GetFunctionImport(sPath, oParameter).then(function (oData) {
                     if (oData.Type == 'E') {
                         let sRfidSelect = this.getView().getModel("WoutJSON").getProperty("/RFIDSelect");
@@ -348,7 +342,6 @@ sap.ui.define([
 
                         var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                         let sMensaje = oData.Message;
-                        //busyDialog4.close();
                         MessageBox.error(sMensaje, {
                             styleClass: bCompact ? "sapUiSizeCompact" : ""
                         });
@@ -362,8 +355,11 @@ sap.ui.define([
                         this.getFragment("RFIDDialog").then(function (oFragment) {
                             oFragment.getModel().setProperty(sPath, aRFIDLine);
                         });
-                        //busyDialog4.close();
+    
                     }                    
+
+                    }
+
                 }.bind(this)).catch((oError) => {
                     var JSError = JSON.parse(oError.responseText);
                     var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
@@ -371,12 +367,12 @@ sap.ui.define([
                     MessageBox.error(sMensaje, {
                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                     });
-                    //busyDialog4.close();
+
                 }).finally(function (info) {
                     setTimeout(() => {
                         this.focusInput();                        
                     }, 250);
-                    //busyDialog4.close();
+                   
                 }.bind(this));
             },
 
