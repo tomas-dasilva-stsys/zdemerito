@@ -355,8 +355,6 @@ sap.ui.define([
                         this.getFragment("RFIDDialog").then(function (oFragment) {
                             oFragment.getModel().setProperty(sPath, aRFIDLine);
                         });
-    
-                    }                    
 
                     }
 
@@ -370,9 +368,9 @@ sap.ui.define([
 
                 }).finally(function (info) {
                     setTimeout(() => {
-                        this.focusInput();                        
+                        this.focusInput();
                     }, 250);
-                   
+
                 }.bind(this));
             },
 
