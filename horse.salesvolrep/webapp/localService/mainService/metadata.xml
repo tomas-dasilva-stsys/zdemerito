@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Measures.V1" Alias="SAP__measures"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="SAP__capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="SAP__aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="SAP__UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="SAP__HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Session.v1" Alias="SAP__session"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HIERARCHY',Version='0001',SAP__Origin='LOCAL')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Hierarchy.v1" Alias="SAP__hierarchy"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="com.sap.gateway.srvd.zotc_sd_sales_volume.v0001" Alias="SAP__self">
+            <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
+            <EntityType Name="ZOTC_C_ROOT_SALES_VOLUMEType">
+                <Key>
+                    <PropertyRef Name="vbeln"/>
+                    <PropertyRef Name="posnr"/>
+                </Key>
+                <Property Name="vbeln" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="posnr" Type="Edm.String" Nullable="false" MaxLength="6"/>
+                <Property Name="bukrs" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="vkorg" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="vkgrp" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="vkbur" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="kunnr" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="NameOrg1Kunnr" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="kunrg" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="NameOrg1Kunrg" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="kunwe" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="NameOrg1Kunwe" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="knref" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="akont" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="stceg" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="waerk" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="CustomerPaymentTerms" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="IncotermsClassification" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="IncotermsTransferLocation" Type="Edm.String" Nullable="false" MaxLength="28"/>
+                <Property Name="land1" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="stceg_l" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="bzirk" Type="Edm.String" Nullable="false" MaxLength="6"/>
+                <Property Name="bztxt" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="CustomerAccountAssignmentGroup" Type="Edm.String" Nullable="false" MaxLength="2"/>
+                <Property Name="matnr" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="BillingDocumentItemText" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="werks" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="StorageLocation" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="MatlAccountAssignmentGroup" Type="Edm.String" Nullable="false" MaxLength="2"/>
+                <Property Name="prodh" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="mwskz" Type="Edm.String" Nullable="false" MaxLength="2"/>
+                <Property Name="prctr" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="kdmat" Type="Edm.String" Nullable="false" MaxLength="35"/>
+                <Property Name="fkart" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="vtext" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="fkdat" Type="Edm.Date"/>
+                <Property Name="AccountingPostingStatus" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="AccountingDocument" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="vbelv" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="zz1_zzrannumber_dli" Type="Edm.String" Nullable="false" MaxLength="9"/>
+                <Property Name="BillingDocumentIsCancelled" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="shkzg" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="aubel" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="auart" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="bezei" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ktext" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="bstnk" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ihrez_e" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="prsdt" Type="Edm.Date"/>
+                <Property Name="fkimg" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="vrkme" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="ntgew" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="3"/>
+                <Property Name="gewei" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="kbetr" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="2"/>
+                <Property Name="netwr" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
+                <Property Name="mwsbp" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="variable"/>
+                <Property Name="TotalGrossValue" Type="Edm.Decimal" Nullable="false" Precision="16" Scale="variable"/>
+                <Property Name="waerk_prcd" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="kbetr_PCIP" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="2"/>
+                <Property Name="KWERT_K_PCIP" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="2"/>
+                <Property Name="UnitaryMargin" Type="Edm.Decimal" Nullable="false" Precision="25" Scale="2"/>
+                <Property Name="TotalMargin" Type="Edm.Decimal" Nullable="false" Precision="25" Scale="2"/>
+                <Property Name="UnitaryMarginPercen" Type="Edm.Decimal" Nullable="false" Precision="10" Scale="2"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="ZOTC_C_ROOT_SALES_VOLUME" EntityType="com.sap.gateway.srvd.zotc_sd_sales_volume.v0001.ZOTC_C_ROOT_SALES_VOLUMEType"/>
+            </EntityContainer>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vbeln">
+                <Annotation Term="SAP__common.Label" String="Billing document"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Bill. Doc."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/posnr">
+                <Annotation Term="SAP__common.Label" String="Item"/>
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Heading" String="Item"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing Item"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/bukrs">
+                <Annotation Term="SAP__common.Label" String="Company code"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="CoCd"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Company Code"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vkorg">
+                <Annotation Term="SAP__common.Label" String="Sales organization"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="SOrg."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Organization"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vkgrp">
+                <Annotation Term="SAP__common.Label" String="Sales Group"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="SGrp"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Group"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vkbur">
+                <Annotation Term="SAP__common.Label" String="Sales Office"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="SOff."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Office"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kunnr">
+                <Annotation Term="SAP__common.Label" String="Sold-to Party"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Sold-to"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sold-to Party"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/NameOrg1Kunnr">
+                <Annotation Term="SAP__common.Label" String="Sold-to Party Descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Name 1"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Name 1 of organization"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kunrg">
+                <Annotation Term="SAP__common.Label" String="Payer"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Payer"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Payer"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/NameOrg1Kunrg">
+                <Annotation Term="SAP__common.Label" String="Payer Descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Name 1"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Name 1 of organization"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kunwe">
+                <Annotation Term="SAP__common.Label" String="Ship-to Party"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Ship-to"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Ship-to Party"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/NameOrg1Kunwe">
+                <Annotation Term="SAP__common.Label" String="Ship-to Party Descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Name 1"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Name 1 of organization"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/knref">
+                <Annotation Term="SAP__common.Label" String="GPI Address code"/>
+                <Annotation Term="SAP__common.Heading" String="Part"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Customer description of partner (plant, storage location)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/akont">
+                <Annotation Term="SAP__common.Label" String="Reconcilliation Account"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Recon.acct"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Reconciliation Account in General Ledger"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/stceg">
+                <Annotation Term="SAP__common.Label" String="VAT Registration No"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="VAT Registration No."/>
+                <Annotation Term="SAP__common.QuickInfo" String="VAT Registration Number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/waerk">
+                <Annotation Term="SAP__common.IsCurrency"/>
+                <Annotation Term="SAP__common.Label" String="Document currency"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="SD Document Currency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/CustomerPaymentTerms">
+                <Annotation Term="SAP__common.Label" String="Terms of payment"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Terms of Payment"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Terms of Payment Key"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/IncotermsClassification">
+                <Annotation Term="SAP__common.Label" String="Incoterm"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="IncoT"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Incoterms (Part 1)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/IncotermsTransferLocation">
+                <Annotation Term="SAP__common.Label" String="Incoterm part 2"/>
+                <Annotation Term="SAP__common.Heading" String="Inco. 2"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Incoterms (Part 2)"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/land1">
+                <Annotation Term="SAP__common.Label" String="Dest. Country/Region"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Dest. Ctry/Reg"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Destination Country/Region"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/stceg_l">
+                <Annotation Term="SAP__common.Label" String="Ctry/Rgn Sls Tax No"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="STC"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Country/Region of Sales Tax ID Number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/bzirk">
+                <Annotation Term="SAP__common.Label" String="Sales District"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="SDst"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales District"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/bztxt">
+                <Annotation Term="SAP__common.Label" String="Sales District descrip."/>
+                <Annotation Term="SAP__common.Heading" String="District Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Name of the District"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/CustomerAccountAssignmentGroup">
+                <Annotation Term="SAP__common.Label" String="Account Assigment Group Customer"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="AAGC"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Account Assignment Group for Customer"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/matnr">
+                <Annotation Term="SAP__common.Label" String="Material"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Material"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Material Number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/BillingDocumentItemText">
+                <Annotation Term="SAP__common.Label" String="Material descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Item Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Short text for sales order item"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/werks">
+                <Annotation Term="SAP__common.Label" String="Plant"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Plnt"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Plant"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/StorageLocation">
+                <Annotation Term="SAP__common.Label" String="Storage location"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Storage Location"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Storage Location"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/MatlAccountAssignmentGroup">
+                <Annotation Term="SAP__common.Label" String="Account asssigment group"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="AAGM"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Account Assignment Group for Material"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/prodh">
+                <Annotation Term="SAP__common.Label" String="Product hierarchy"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Product Hierarchy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Product Hierarchy"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/mwskz">
+                <Annotation Term="SAP__common.Label" String="Tax code"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Tx"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Tax on sales/purchases code"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/prctr">
+                <Annotation Term="SAP__common.Label" String="Profit center"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Profit Ctr"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Profit Center"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kdmat">
+                <Annotation Term="SAP__common.Label" String="Customer part number"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Customer Material Number"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Material Number Used by Customer"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/fkart">
+                <Annotation Term="SAP__common.Label" String="Billing type"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="BillT"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing Type"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vtext">
+                <Annotation Term="SAP__common.Label" String="Billing type descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Description"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/fkdat">
+                <Annotation Term="SAP__common.Label" String="Billing date"/>
+                <Annotation Term="SAP__common.Heading" String="Billing Date"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing Date"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/AccountingPostingStatus">
+                <Annotation Term="SAP__common.Label" String="Posting status"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="PS"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Posting Status of Billing Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/AccountingDocument">
+                <Annotation Term="SAP__common.Label" String="Account document"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="DocumentNo"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Document Number of an Accounting Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vbelv">
+                <Annotation Term="SAP__common.Label" String="Delivery"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Predecessr"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Preceding sales and distribution document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/zz1_zzrannumber_dli">
+                <Annotation Term="SAP__common.Label" String="Component group number"/>
+                <Annotation Term="SAP__common.Heading" String="RAN Number"/>
+                <Annotation Term="SAP__common.QuickInfo" String="RAN Number"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/BillingDocumentIsCancelled">
+                <Annotation Term="SAP__common.Label" String="Billing document cancelled"/>
+                <Annotation Term="SAP__common.Heading" String="Can"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing document is canceled"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/shkzg">
+                <Annotation Term="SAP__common.Label" String="Returns"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Ret"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Returns item"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/aubel">
+                <Annotation Term="SAP__common.Label" String="Sales document"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="Sales Doc."/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/auart">
+                <Annotation Term="SAP__common.Label" String="Sales document type"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Heading" String="SaTy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Document Type"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/bezei">
+                <Annotation Term="SAP__common.Label" String="Sales document type descrip."/>
+                <Annotation Term="SAP__common.Heading" String="Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Document Type Description"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/ktext">
+                <Annotation Term="SAP__common.Label" String="Description"/>
+                <Annotation Term="SAP__common.Heading" String="Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Search term for product proposal"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/bstnk">
+                <Annotation Term="SAP__common.Label" String="Customer reference"/>
+                <Annotation Term="SAP__common.Heading" String="Customer Reference"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Customer Reference"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/ihrez_e">
+                <Annotation Term="SAP__common.Label" String="Old SCOPP Customer reference"/>
+                <Annotation Term="SAP__common.Heading" String="Ship-to Char"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Ship-to Party Character"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/prsdt">
+                <Annotation Term="SAP__common.Label" String="Pricing date"/>
+                <Annotation Term="SAP__common.Heading" String="Pricing Dt"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Date for Pricing and Exchange Rate"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/fkimg">
+                <Annotation Term="SAP__common.Label" String="Invoiced Quantity"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/vrkme">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="Sales Unit"/>
+                <Annotation Term="SAP__common.Heading" String="SU"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Sales Unit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/ntgew">
+                <Annotation Term="SAP__common.Label" String="Net Weight"/>
+                <Annotation Term="SAP__measures.Unit" Path="gewei"/>
+                <Annotation Term="SAP__common.Heading" String="Net Weight"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Net Weight"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/gewei">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="Unit of weight"/>
+                <Annotation Term="SAP__common.Heading" String="WUn"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Unit of Weight"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kbetr">
+                <Annotation Term="SAP__common.Label" String="Net value"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/netwr">
+                <Annotation Term="SAP__common.Label" String="Total net value"/>
+                <Annotation Term="SAP__measures.ISOCurrency" Path="waerk"/>
+                <Annotation Term="SAP__common.Heading" String="Net Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Net Value of Billing item in Document Currency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/mwsbp">
+                <Annotation Term="SAP__common.Label" String="Tax amount"/>
+                <Annotation Term="SAP__measures.ISOCurrency" Path="waerk"/>
+                <Annotation Term="SAP__common.Heading" String="Tax Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Tax Amount in Document Currency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/TotalGrossValue">
+                <Annotation Term="SAP__common.Label" String="Total Gross value"/>
+                <Annotation Term="SAP__measures.ISOCurrency" Path="waerk"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/waerk_prcd">
+                <Annotation Term="SAP__common.IsCurrency"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+                <Annotation Term="SAP__common.Label" String="Document Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="SD Document Currency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/kbetr_PCIP">
+                <Annotation Term="SAP__common.Label" String="Unitary cost"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/KWERT_K_PCIP">
+                <Annotation Term="SAP__common.Label" String="Total cost Amount"/>
+                <Annotation Term="SAP__measures.ISOCurrency" Path="waerk_prcd"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/UnitaryMargin">
+                <Annotation Term="SAP__common.Label" String="Unitary margin"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/TotalMargin">
+                <Annotation Term="SAP__common.Label" String="Total margin"/>
+                <Annotation Term="SAP__measures.ISOCurrency" Path="waerk_prcd"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType/UnitaryMarginPercen">
+                <Annotation Term="SAP__common.Label" String="Unitary margin %"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZOTC_C_ROOT_SALES_VOLUMEType">
+                <Annotation Term="SAP__common.Label" String="Projection view CDS ZOTC_I_ROOT_SALES_VOLUME"/>
+                <Annotation Term="SAP__UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Summarize and purchasing inf. grouped"/>
+                        <PropertyValue Property="TypeNamePlural" String="Summarize and purchasing inf. grouped"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="SAP__UI.DataField">
+                                <PropertyValue Property="Label" String="Header"/>
+                                <PropertyValue Property="Value" Path="vbeln"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__UI.Identification">
+                    <Collection>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vbeln"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="posnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bukrs"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkorg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkgrp"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkbur"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunrg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunrg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunwe"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunwe"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="knref"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="akont"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="stceg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="waerk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="CustomerPaymentTerms"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="IncotermsClassification"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="IncotermsTransferLocation"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="land1"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="stceg_l"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bzirk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bztxt"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="CustomerAccountAssignmentGroup"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="matnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="BillingDocumentItemText"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="werks"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="StorageLocation"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="MatlAccountAssignmentGroup"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prodh"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="mwskz"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prctr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kdmat"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkart"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vtext"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkdat"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="AccountingPostingStatus"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="AccountingDocument"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vbelv"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="zz1_zzrannumber_dli"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="BillingDocumentIsCancelled"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="shkzg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="aubel"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="auart"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bezei"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ktext"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bstnk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ihrez_e"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prsdt"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkimg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vrkme"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ntgew"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="gewei"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kbetr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="netwr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="mwsbp"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="TotalGrossValue"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kbetr_PCIP"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="KWERT_K_PCIP"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="UnitaryMargin"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="TotalMargin"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="UnitaryMarginPercen"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__UI.LineItem">
+                    <Collection>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vbeln"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="posnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bukrs"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkorg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkgrp"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vkbur"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunrg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunrg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kunwe"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="NameOrg1Kunwe"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="knref"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="akont"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="stceg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="waerk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="CustomerPaymentTerms"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="IncotermsClassification"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="IncotermsTransferLocation"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="land1"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="stceg_l"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bzirk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bztxt"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="CustomerAccountAssignmentGroup"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="matnr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="BillingDocumentItemText"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="werks"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="StorageLocation"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="MatlAccountAssignmentGroup"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prodh"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="mwskz"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prctr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kdmat"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkart"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vtext"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkdat"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="AccountingPostingStatus"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="AccountingDocument"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vbelv"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="zz1_zzrannumber_dli"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="BillingDocumentIsCancelled"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="shkzg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="aubel"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="auart"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bezei"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ktext"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="bstnk"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ihrez_e"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="prsdt"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="fkimg"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="vrkme"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="ntgew"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="gewei"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kbetr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="netwr"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="mwsbp"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="TotalGrossValue"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="kbetr_PCIP"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="KWERT_K_PCIP"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="UnitaryMargin"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="TotalMargin"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="UnitaryMarginPercen"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__UI.PresentationVariant">
+                    <Record>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="SAP__common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="vbeln"/>
+                                    <PropertyValue Property="Descending" Bool="true"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="GroupBy">
+                            <Collection>
+                                <PropertyPath>vbeln</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>vbeln</PropertyPath>
+                        <PropertyPath>posnr</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/ZOTC_C_ROOT_SALES_VOLUME">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="auart"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="ntgew"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="netwr"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="mwsbp"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="TotalGrossValue"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.Container">
+                <Annotation Term="SAP__CodeList.CurrencyCodes">
+                    <Record>
+                        <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="CollectionPath" String="Currencies"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__CodeList.UnitsOfMeasure">
+                    <Record>
+                        <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="CollectionPath" String="UnitsOfMeasure"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="SAP__aggregation.RollupType/None"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+                <Annotation Term="SAP__capabilities.FilterFunctions">
+                    <Collection>
+                        <String>eq</String>
+                        <String>ne</String>
+                        <String>gt</String>
+                        <String>ge</String>
+                        <String>lt</String>
+                        <String>le</String>
+                        <String>and</String>
+                        <String>or</String>
+                        <String>contains</String>
+                        <String>startswith</String>
+                        <String>endswith</String>
+                        <String>any</String>
+                        <String>all</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SupportedFormats">
+                    <Collection>
+                        <String>application/json</String>
+                        <String>application/pdf</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__PDF.Features">
+                    <Record>
+                        <PropertyValue Property="DocumentDescriptionReference" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="DocumentDescriptionCollection" String="MyDocumentDescriptions"/>
+                        <PropertyValue Property="ArchiveFormat" Bool="true"/>
+                        <PropertyValue Property="Border" Bool="true"/>
+                        <PropertyValue Property="CoverPage" Bool="true"/>
+                        <PropertyValue Property="FitToPage" Bool="true"/>
+                        <PropertyValue Property="FontName" Bool="true"/>
+                        <PropertyValue Property="FontSize" Bool="true"/>
+                        <PropertyValue Property="Margin" Bool="true"/>
+                        <PropertyValue Property="Padding" Bool="true"/>
+                        <PropertyValue Property="Signature" Bool="true"/>
+                        <PropertyValue Property="HeaderFooter" Bool="true"/>
+                        <PropertyValue Property="ResultSizeDefault" Int="20000"/>
+                        <PropertyValue Property="ResultSizeMaximum" Int="20000"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
+                <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
