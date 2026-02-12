@@ -56,7 +56,6 @@ sap.ui.define([
                 return;
             }
             
-
             oRouter.navTo("DetailView");
         }
     });
