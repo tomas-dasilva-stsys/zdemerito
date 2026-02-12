@@ -1,0 +1,132 @@
+<mvc:View
+    xmlns:form="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    controllerName="zdemerito.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <VBox
+            id="vbox"
+            class="sapUiSmallMargin"
+        >
+            <form:Form id="formId">
+                <form:title>
+                    <core:Title
+                        id="formTitle"
+                        text="Form title"
+                    />
+                </form:title>
+                <form:layout>
+                    <form:ResponsiveGridLayout
+                        id="formLayout"
+                        labelSpanXL="4"
+                        labelSpanL="3"
+                        labelSpanM="4"
+                        labelSpanS="12"
+                        adjustLabelSpan="true"
+                        emptySpanXL="4"
+                        emptySpanL="4"
+                        emptySpanM="4"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="true"
+                    />
+                </form:layout>
+                <form:formContainers>
+                    <form:FormContainer id="formContainerId">
+                        <form:FormElement id="formElementId">
+                            <form:label>
+                                <Label
+                                    id="labelId"
+                                    class="sapUiTinyMarginTop"
+                                    text="{i18n>materialLabel}"
+                                    required="true"
+                                />
+                            </form:label>
+                            <form:fields>
+                                <Input
+                                    id="meterialInput"
+                                    value=""
+                                    change=".onInputChange"
+                                />
+                            </form:fields>
+                        </form:FormElement>
+
+                        <form:FormElement id="serialNumberFormElement">
+                            <form:label>
+                                <Label
+                                    id="serialNumberLabel"
+                                    text="{i18n>serialNumberLabel}"
+                                    class="sapUiTinyMarginTop"
+                                />
+                            </form:label>
+                            <form:fields>
+                                <Input
+                                    id="serialNumberInput"
+                                    value=""
+                                />
+                            </form:fields>
+                        </form:FormElement>
+
+                        <form:FormElement id="plantFormElement">
+                            <form:label>
+                                <Label
+                                    id="plantLabel"
+                                    text="{i18n>plantLabel}"
+                                    class="sapUiTinyMarginTop"
+                                    required="true"
+                                />
+                            </form:label>
+                            <form:fields>
+                                <Input
+                                    id="plantInput"
+                                    value=""
+                                    change=".onInputChange"
+                                    width="50%"
+                                />
+                            </form:fields>
+                        </form:FormElement>
+
+                        <form:FormElement id="costCenterFormElement">
+                            <form:label>
+                                <Label
+                                    id="costCenterLabel"
+                                    text="{i18n>costCenterLabel}"
+                                    class="sapUiTinyMarginTop"
+                                    required="true"
+                                />
+                            </form:label>
+                            <form:fields>
+                                <Input
+                                    id="costCenterInput"
+                                    value=""
+                                    width="50%"
+                                    change=".onInputChange"
+                                />
+                            </form:fields>
+                        </form:FormElement>
+                    </form:FormContainer>
+                </form:formContainers>
+            </form:Form>
+        </VBox>
+
+        <footer>
+            <Toolbar id="toolbar">
+                <ToolbarSpacer id="toolbarSeparator" />
+                <Button
+                    id="saveButton"
+                    text="{i18n>continueButton}"
+                    type="Emphasized"
+                    press="onContinuePress"
+                />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

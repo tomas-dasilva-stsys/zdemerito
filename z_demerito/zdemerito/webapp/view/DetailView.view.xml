@@ -1,0 +1,160 @@
+<mvc:View
+    controllerName="zdemerito.controller.DetailView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="detailPage"
+        title="Piezas a Recuperar: Lista"
+        navButtonPress=".onNavBack"
+    >
+        <!-- Barra de búsqueda y filtro -->
+        <subHeader>
+            <Bar
+                id="searchBar"
+                class="sapUiMediumMarginBottom"
+            >
+                <contentLeft>
+                    <Label text="Buscar:" />
+                    <SearchField
+                        id="searchField"
+                        width="15rem"
+                        search=".onSearch"
+                    />
+                </contentLeft>
+                <contentRight>
+                    <Label text="Filtrar por:" />
+                    <Select
+                        id="filterSelect"
+                        change=".onFilterChange"
+                    >
+                        <core:Item
+                            key="all"
+                            text="Todos los conceptos"
+                        />
+                        <core:Item
+                            key="concepto1"
+                            text="Concepto 1"
+                        />
+                        <core:Item
+                            key="concepto2"
+                            text="Concepto 2"
+                        />
+                    </Select>
+                </contentRight>
+            </Bar>
+        </subHeader>
+
+        <content>
+            <Table
+                id="piezasTable"
+                mode="MultiSelect"
+                items="{/piezas}"
+            >
+                <columns>
+                    <!-- Cant. Recup. -->
+                    <Column
+                        width="7rem"
+                        hAlign="Center"
+                    >
+                        <Text
+                            text="Cant. Recup."
+                            wrapping="true"
+                        />
+                    </Column>
+
+                    <!-- Concepto Clas. -->
+                    <Column
+                        width="7rem"
+                        hAlign="Center"
+                    >
+                        <Text
+                            text="Concepto Clas."
+                            wrapping="true"
+                        />
+                    </Column>
+
+                    <!-- Pos -->
+                    <Column
+                        width="5rem"
+                        hAlign="Center"
+                    >
+                        <Text text="Pos" />
+                    </Column>
+
+                    <!-- Componente -->
+                    <Column width="9rem">
+                        <Text text="Componente" />
+                    </Column>
+
+                    <!-- Denominación Componente -->
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="Denominación Componente" />
+                    </Column>
+
+                    <!-- Cantidad -->
+                    <Column
+                        width="6rem"
+                        hAlign="End"
+                    >
+                        <Text text="Cantidad" />
+                    </Column>
+
+                    <!-- Um -->
+                    <Column
+                        width="4rem"
+                        hAlign="Center"
+                    >
+                        <Text text="Um" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <!-- Cant. Recup. input -->
+                            <Input
+                                value="{cantRecup}"
+                                type="Number"
+                            />
+
+                            <!-- Concepto Clas. -->
+                            <Text text="{conceptoClas}" />
+
+                            <!-- Pos -->
+                            <Text text="{pos}" />
+
+                            <!-- Componente -->
+                            <Text text="{componente}" />
+
+                            <!-- Denominación Componente -->
+                            <Text text="{denominacion}" />
+
+                            <!-- Cantidad -->
+                            <Text text="{cantidad}" />
+
+                            <!-- Um -->
+                            <Text text="{um}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    id="saveButton"
+                    text="Grabar"
+                    type="Emphasized"
+                    press=".onSavePress"
+                />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>
