@@ -55,6 +55,7 @@ sap.ui.define([
             if (!this.checkInputs()) {
                 return;
             }
+            
 
             oRouter.navTo("DetailView");
         }
