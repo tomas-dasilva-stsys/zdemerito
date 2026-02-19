@@ -34,12 +34,16 @@
                             text="Todos los conceptos"
                         />
                         <core:Item
-                            key="concepto1"
-                            text="Concepto 1"
+                            key="4050"
+                            text="4050"
                         />
                         <core:Item
-                            key="concepto2"
-                            text="Concepto 2"
+                            key="4060"
+                            text="4060"
+                        />
+                        <core:Item
+                            key="4080"
+                            text="4080"
                         />
                     </Select>
                 </contentRight>

@@ -21,6 +21,56 @@ sap.ui.define([
                 ]
             });
             this.getView().setModel(oModel);
+
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("DetailView").attachPatternMatched(this._onRouteMatched, this);
+        },
+
+        _onRouteMatched: function (oEvent) {
+            const oArguments = oEvent.getParameter("arguments")["?query"];
+
+            const sMaterial = oArguments?.material;
+            const sPlant = oArguments?.plant;
+            const sSerialNumber = oArguments?.serialNumber;
+            const sCostCenter = oArguments?.costCenter;
+
+            this._loadData(sMaterial, sPlant, sSerialNumber, sCostCenter);
+        },
+
+        _loadData: async function (sMaterial, sPlant, sSerialNumber, sCostCenter) {
+            const oModel = this.getOwnerComponent().getModel();
+
+            // Lógica para cargar datos desde el backend
+        },
+
+        onSearch: function (oEvent) {
+            const sQuery = oEvent.getSource().getValue();
+            const oTable = this.getView().byId("piezasTable");
+            const oBinding = oTable.getBinding("items");
+
+            if (sQuery && sQuery.length > 0) {
+                const oFilter = new Filter("componente", FilterOperator.Contains, sQuery);
+                oBinding.filter(oFilter);
+            }
+
+            if (!sQuery || sQuery.length === 0) {
+                oBinding.filter([]);
+            }
+        },
+
+        onFilterChange: function (oEvent) {
+            const sSelectedKey = oEvent.getSource().getSelectedKey();
+            const oTable = this.getView().byId("piezasTable");
+            const oBinding = oTable.getBinding("items");
+
+            if (sSelectedKey === "all") {
+                oBinding.filter([]);
+            }
+
+            if (sSelectedKey !== "all") {
+                const oFilter = new Filter("conceptoClas", FilterOperator.EQ, sSelectedKey);
+                oBinding.filter(oFilter);
+            }
         },
 
         onNavBack() {

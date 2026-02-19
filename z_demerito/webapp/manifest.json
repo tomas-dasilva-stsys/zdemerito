@@ -98,7 +98,7 @@
         },
         {
           "name": "DetailView",
-          "pattern": "detail",
+          "pattern": "detail{?query}",
           "target": [
             "DetailView"
           ]
