@@ -78,6 +78,24 @@ sap.ui.define([
             }
         },
 
+        onPiezasTableSelectionChange: function (oEvent) {
+            const oTable = oEvent.getSource();
+            const aSelectedItems = oTable.getSelectedItems();
+            const oSaveButton = this.getView().byId("saveButton");
+
+            oSaveButton.setEnabled(aSelectedItems.length > 0);
+        },
+
+        onCantRecupInputChange: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const sValue = oInput.getValue();
+
+            if (sValue) {
+                const newValue = parseFloat(sValue).toFixed(3);
+                oInput.setValue(newValue);
+            }
+        },
+
         onNavBack() {
             const oHistory = History.getInstance();
             const sPreviousHash = oHistory.getPreviousHash();

@@ -6,7 +6,7 @@
 >
     <Page
         id="detailPage"
-        title="Piezas a Recuperar: Lista"
+        title="{i18n>detailTitle}"
         navButtonPress=".onNavBack"
     >
         <!-- Barra de búsqueda y filtro -->
@@ -16,7 +16,7 @@
                 class="sapUiMediumMarginBottom"
             >
                 <contentLeft>
-                    <Label text="Buscar:" />
+                    <Label text="{i18n>search}:" />
                     <SearchField
                         id="searchField"
                         width="15rem"
@@ -24,7 +24,7 @@
                     />
                 </contentLeft>
                 <contentRight>
-                    <Label text="Filtrar por:" />
+                    <Label text="{i18n>filterBy}:" />
                     <Select
                         id="filterSelect"
                         change=".onFilterChange"
@@ -55,6 +55,7 @@
                 id="piezasTable"
                 mode="MultiSelect"
                 items="{/piezas}"
+                selectionChange="onPiezasTableSelectionChange"
             >
                 <columns>
                     <!-- Cant. Recup. -->
@@ -124,6 +125,7 @@
                             <Input
                                 value="{cantRecup}"
                                 type="Number"
+                                change="onCantRecupInputChange"
                             />
 
                             <!-- Concepto Clas. -->
@@ -154,8 +156,9 @@
                 <ToolbarSpacer />
                 <Button
                     id="saveButton"
-                    text="Grabar"
+                    text="{i18n>saveButton}"
                     type="Emphasized"
+                    enabled="false"
                     press=".onSavePress"
                 />
             </Toolbar>
