@@ -1,0 +1,62 @@
+<core:FragmentDefinition
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:fb="sap.ui.comp.filterbar"
+>
+    <ValueHelpDialog
+        id="CostCenterHelpDialog"
+        title="{i18n>costCenterLabel}"
+        ok=".onValueHelpOkPress"
+        cancel="._closeValueHelpDialog"
+        key="CostCenter"
+        descriptionKey="Name"
+        supportMultiselect="false"
+    >
+        <filterBar>
+            <fb:FilterBar search="onValueHelpSearch">
+                <fb:filterGroupItems>
+                    <!-- <fb:FilterGroupItem
+                        groupName="__$INTERNAL$"
+                        name="kokrs"
+                        label="{i18n>codeLabel}"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                name="kokrs"
+                                submit="onSubmitFilter"
+                            />
+                        </fb:control>
+                    </fb:FilterGroupItem> -->
+                    <fb:FilterGroupItem
+                        groupName="__$INTERNAL$"
+                        name="Costcenter"
+                        label="{i18n>costCenterLabel}"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                name="Costcenter"
+                                submit="onValueHelpSearch"
+                            />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        groupName="__$INTERNAL$"
+                        name="ktext"
+                        label="{i18n>descriptionLabel}"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                name="ktext"
+                                submit="onValueHelpSearch"
+                            />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

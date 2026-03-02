@@ -1,7 +1,10 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
-    "zdemerito/model/models"
-], (UIComponent, models) => {
+    "zdemerito/model/models",
+	"zdemerito/utils/FioriComponent"
+], (UIComponent,
+	models,
+	FioriComponent) => {
     "use strict";
 
     return UIComponent.extend("zdemerito.Component", {
@@ -18,9 +21,11 @@ sap.ui.define([
 
             // set the device model
             this.setModel(models.createDeviceModel(), "device");
-
+            
             // enable routing
             this.getRouter().initialize();
+            
+            FioriComponent.setComponent(this);
         }
     });
 });

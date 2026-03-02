@@ -1,20 +1,77 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], (Controller, Filter, FilterOperator) => {
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment",
+    "sap/m/MessageBox",
+    "sap/base/Log",
+    "zdemerito/model/AppJsonModel",
+    "sap/ui/model/json/JSONModel",
+    "zdemerito/services/MatchCodeService"
+], (Controller,
+    Filter,
+    FilterOperator,
+    Fragment,
+    MessageBox,
+    Log,
+    AppJsonModel,
+    JSONModel,
+    MatchCodeService) => {
     "use strict";
+    let inputId;
 
     return Controller.extend("zdemerito.controller.MainView", {
         onInit() {
+            AppJsonModel.initializeModel();
+            this._oFragments = {}; // Map para cachear fragments
+
+        },
+
+        getFragment: function (sFragmentName) {
+            if (!this.oFragments) {
+                this.oFragments = {};
+            }
+
+            if (this.oFragments[sFragmentName]) {
+                return Promise.resolve(this.oFragments[sFragmentName]);
+            }
+
+            return Fragment.load({
+                id: this.getView().getId(),
+                name: `zdemerito.view.fragments.${sFragmentName}`,
+                controller: this
+            }).then((oFragment) => {
+                const oControl = Array.isArray(oFragment) ? oFragment[0] : oFragment;
+                this.oFragments[sFragmentName] = oControl;
+                this.getView().addDependent(oControl);
+                return oControl;
+            }).catch((oError) => {
+                Log.error(`Error al cargar el fragment: ${sFragmentName}`, oError);
+                return Promise.reject(oError);
+            });
+        },
+
+        _closeValueHelpDialog: function (_oEvent) {
+            this.getFragment(`${inputId}HelpDialog`).then(function (oFragment) {
+                oFragment.close();
+            });
+        },
+
+        destroyFragments: function () {
+            if (this.oFragments) {
+                Object.keys(this.oFragments).forEach(function (sKey) {
+                    this.oFragments[sKey].destroy();
+                    delete this.oFragments[sKey];
+                }, this);
+            }
         },
 
         checkInputs: function () {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
 
-            const materialInput = this.byId("meterialInput");
-            const plantInput = this.byId("plantInput");
-            const costCenterInput = this.byId("costCenterInput");
+            const materialInput = this.byId("Material");
+            const plantInput = this.byId("Plant");
+            const costCenterInput = this.byId("CostCenter");
 
             const isMaterialInputValid = materialInput.getValue().trim() !== "";
             const isPlantInputValid = plantInput.getValue().trim() !== "";
@@ -52,9 +109,181 @@ sap.ui.define([
             }
         },
 
+        getMatchCodePath: function (sInputId) {
+            const matchCodeMap = {
+                "Material": "/MatchMaterial",
+                "Plant": "/MatchWorkCenter",
+                "CostCenter": "/MatchCostCenter"
+            };
+            return matchCodeMap[sInputId] || "";
+        },
+
+        onInputValueHelpRequest: function (oEvent) {
+            const currInputId = oEvent.getSource().getId().split('-').pop()
+            const currMatchCodePath = this.getMatchCodePath(currInputId);
+            inputId = currInputId;
+
+            // Lógica para mostrar el value help dependiendo del input
+            this.getFragment(`${currInputId}HelpDialog`).then((oFragment) => {
+                if (oFragment._initialized) {
+                    oFragment.open();
+                    return;
+                }
+
+                oFragment.getTableAsync().then((oTable) => {
+                    oTable.setModel(MatchCodeService.getOdataModel());
+
+                    let tableCols = AppJsonModel.getProperty(`/${currInputId}`)
+                    let currentJsonModel = new JSONModel({
+                        "cols": tableCols
+                    })
+
+                    oTable.setModel(currentJsonModel, "columns");
+                    if (oTable.bindRows) {
+                        oTable.bindAggregation("rows", {
+                            path: currMatchCodePath,
+                            showHeader: false
+                        });
+                    }
+
+                    oFragment.update();
+                    oFragment._initialized = true; // marcar como listo
+                    oFragment.open();
+
+                }).catch((oError) => {
+                    MessageBox.error(oError.message || "Error al cargar la tabla del value help");
+                });
+
+                // oFragment.open();
+            }).catch((oError) => {
+                MessageBox.error(oError.message || "Error al cargar el value help");
+            });
+        },
+
+        onValueHelpOkPress: function (oEvent) {
+            const currToken = oEvent.getParameter("tokens")[0].getCustomData()[0];
+
+            if (inputId === 'Material') {
+                AppJsonModel.setInnerProperty('/DemeritData', 'Material', currToken.getValue().matnr);
+                this.byId(inputId).setValueState("None");
+                this.byId(inputId).setValueStateText("");
+            }
+
+            if (inputId === 'Plant') {
+                AppJsonModel.setInnerProperty('/DemeritData', 'Plant', currToken.getValue().werks);
+                this.byId(inputId).setValueState("None");
+                this.byId(inputId).setValueStateText("");
+            }
+
+            if (inputId === 'CostCenter') {
+                AppJsonModel.setInnerProperty('/DemeritData', 'CostCenter', currToken.getValue().Costcenter);
+                this.byId(inputId).setValueState("None");
+                this.byId(inputId).setValueStateText("");
+            }
+
+            this._closeValueHelpDialog(oEvent);
+        },
+
+        onValueHelpSearch: function (oEvent) {
+            const oSource = oEvent.getSource();
+
+            // Navegar hasta el ValueHelpDialog sin importar quién disparó el evento
+            let oDialog = oSource;
+            while (oDialog && !oDialog.isA("sap.ui.comp.valuehelpdialog.ValueHelpDialog")) {
+                oDialog = oDialog.getParent();
+            }
+
+            if (!oDialog) {
+                Log.error("No se encontró el ValueHelpDialog");
+                return;
+            }
+
+            this._applyValueHelpFilters(oDialog);
+        },
+
+        _applyValueHelpFilters: function (oDialog) {
+            // Obtener el FilterBar del dialog dinámicamente
+            const oFilterBar = oDialog.getContent().find(
+                (oControl) => oControl.isA("sap.ui.comp.filterbar.FilterBar")
+            ) || oDialog.getFilterBar?.();
+
+            // Recorrer TODOS los FilterGroupItems dinámicamente
+            const aFilters = oFilterBar.getFilterGroupItems().reduce((aAcc, oItem) => {
+                const oControl = oItem.getControl();
+                const sValue = oControl.getValue?.();
+                const sField = oItem.getName(); // "matnr", "maktx", etc.
+
+                if (sValue) {
+                    aAcc.push(this._buildFilter(sField, sValue));
+                }
+                return aAcc;
+            }, []);
+
+            oDialog.getTableAsync().then((oTable) => {
+                const sAggregation = oTable.isA("sap.ui.table.Table") ? "rows" : "items";
+
+                const fnApplyFilter = () => {
+                    const oBinding = oTable.getBinding(sAggregation);
+                    if (oBinding) {
+                        oBinding.filter(aFilters);
+                    }
+                };
+
+                const oBinding = oTable.getBinding(sAggregation);
+                if (oBinding) {
+                    // Binding ya existe, filtrar directo
+                    fnApplyFilter();
+                } else {
+                    // Esperar a que el binding esté listo
+                    oTable.attachEventOnce("rowsUpdated", fnApplyFilter);
+                }
+
+                oBinding.attachEventOnce("dataReceived", () => {
+                    // El ValueHelpDialog usa internamente _updateTitles, dispararlo via rerender
+                    const iCount = oBinding.getLength();
+
+                    // Buscar el elemento del DOM que muestra el contador y actualizarlo
+                    const oTable = oDialog.getTable(); // tabla ya resuelta
+                    oDialog.setTitle(oDialog.getTitle()); // forzar re-render del header
+
+                    // Disparar el evento que usa internamente el ValueHelpDialog
+                    oDialog.fireSelectionChange({ tableSelectionParams: { rowIndices: [] } });
+                    oDialog._updateTitles && oDialog._updateTitles();
+                });
+            });
+        },
+
+        // Soporta: ES* (startsWith), *ES (endsWith), *ES* (contains), ES (EQ)
+        _buildFilter: function (sField, sValue) {
+            const bStarts = !sValue.startsWith("*") && sValue.endsWith("*");
+            const bEnds = sValue.startsWith("*") && !sValue.endsWith("*");
+            const bContains = sValue.startsWith("*") && sValue.endsWith("*");
+
+            let sOperator;
+            let sCleanValue;
+
+            if (bContains) {
+                sOperator = FilterOperator.Contains;
+                sCleanValue = sValue.slice(1, -1);
+            } else if (bStarts) {
+                sOperator = FilterOperator.StartsWith;
+                sCleanValue = sValue.slice(0, -1);
+            } else if (bEnds) {
+                sOperator = FilterOperator.EndsWith;
+                sCleanValue = sValue.slice(1);
+            } else {
+                // Sin *
+                sOperator = FilterOperator.Contains;
+                sCleanValue = sValue;
+            }
+
+            return new Filter(sField, sOperator, sCleanValue);
+        },
+
         onContinuePress: function () {
             const oRouter = this.getOwnerComponent().getRouter();
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            const demeritData = AppJsonModel.getProperty('/DemeritData');
             const sBusy = oResourceBundle.getText("busyText");
             const oModel = this.getView().getModel();
 
@@ -62,10 +291,10 @@ sap.ui.define([
                 return;
             }
 
-            const sMaterial = this.byId("meterialInput").getValue().trim();
-            const sPlant = this.byId("plantInput").getValue().trim();
-            const sSerialNumber = this.byId("serialNumberInput").getValue().trim();
-            const sCostCenter = this.byId("costCenterInput").getValue().trim();
+            const sMaterial = demeritData.Material;
+            const sPlant = demeritData.Plant;
+            const sSerialNumber = demeritData.SerialNumber;
+            const sCostCenter = demeritData.CostCenter;
 
             const busyDialog = (sap.ui.getCore().byId("busy4")) ? sap.ui.getCore().byId("busy4") : new sap.m.BusyDialog('busy4', {
                 title: sBusy
@@ -101,6 +330,12 @@ sap.ui.define([
 
             setTimeout(() => {
                 busyDialog.close();
+
+                this.destroyFragments(); // Limpiar fragments cacheados al continuar
+                AppJsonModel.setInnerProperty('/DemeritData', 'Material', "");
+                AppJsonModel.setInnerProperty('/DemeritData', 'Plant', "");
+                AppJsonModel.setInnerProperty('/DemeritData', 'CostCenter', "");
+                AppJsonModel.setInnerProperty('/DemeritData', 'SerialNumber', "");
 
                 oRouter.navTo("DetailView", {
                     query: {
