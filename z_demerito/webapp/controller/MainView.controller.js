@@ -332,11 +332,6 @@ sap.ui.define([
                 busyDialog.close();
 
                 this.destroyFragments(); // Limpiar fragments cacheados al continuar
-                AppJsonModel.setInnerProperty('/DemeritData', 'Material', "");
-                AppJsonModel.setInnerProperty('/DemeritData', 'Plant', "");
-                AppJsonModel.setInnerProperty('/DemeritData', 'CostCenter', "");
-                AppJsonModel.setInnerProperty('/DemeritData', 'SerialNumber', "");
-
                 oRouter.navTo("DetailView", {
                     query: {
                         material: sMaterial,

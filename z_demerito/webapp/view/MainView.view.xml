@@ -14,12 +14,12 @@
             class="sapUiSmallMargin"
         >
             <form:Form id="formId">
-                <!-- <form:title>
+                <form:title>
                     <core:Title
                         id="formTitle"
-                        text="Form title"
+                        text="{i18n>formTitle}"
                     />
-                </form:title> -->
+                </form:title>
                 <form:layout>
                     <form:ResponsiveGridLayout
                         id="formLayout"
