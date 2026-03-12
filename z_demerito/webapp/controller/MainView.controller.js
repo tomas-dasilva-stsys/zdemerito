@@ -7,7 +7,8 @@ sap.ui.define([
     "sap/base/Log",
     "zdemerito/model/AppJsonModel",
     "sap/ui/model/json/JSONModel",
-    "zdemerito/services/MatchCodeService"
+    "zdemerito/services/MatchCodeService",
+    "zdemerito/services/ListMaterialService"
 ], (Controller,
     Filter,
     FilterOperator,
@@ -16,7 +17,8 @@ sap.ui.define([
     Log,
     AppJsonModel,
     JSONModel,
-    MatchCodeService) => {
+    MatchCodeService,
+    ListMaterialService) => {
     "use strict";
     let inputId;
 
@@ -301,46 +303,38 @@ sap.ui.define([
             });
 
             busyDialog.open();
-            // Cambiar por la llamada real al backend
-            // oModel.read("/validateData", {
-            //     filters: [
-            //         new Filter("material", FilterOperator.EQ, sMaterial),
-            //         new Filter("plant", FilterOperator.EQ, sPlant),
-            //         new Filter("costcenter", FilterOperator.EQ, sCostCenter)
-            //     ],
-            //     success: (_) => {
-            //         busyDialog.close();
 
-            //         oRouter.navTo("DetailView", {
-            //             query: {
-            //                 material: sMaterial,
-            //                 serialNumber: sSerialNumber,
-            //                 plant: sPlant,
-            //                 costCenter: sCostCenter
-            //             }
-            //         });
-            //     },
-            //     error: (oError) => {
-            //         busyDialog.close();
+            const aFilter = [
+                new Filter("matnr", FilterOperator.EQ, sMaterial),
+                new Filter("werk", FilterOperator.EQ, sPlant),
+            ];
 
-            //         // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
-            //         MessageBox.error(oError.message || "Error al validar los datos");
-            //     }
-            // })
+            ListMaterialService.callGetService('/ListMaterialOrder', aFilter)
+                .then((oData) => {
+                    if (oData.results.length > 0) {
+                        busyDialog.close();
+                        this.destroyFragments(); // Limpiar fragments cacheados al continuar
 
-            setTimeout(() => {
-                busyDialog.close();
-
-                this.destroyFragments(); // Limpiar fragments cacheados al continuar
-                oRouter.navTo("DetailView", {
-                    query: {
-                        material: sMaterial,
-                        serialNumber: sSerialNumber,
-                        plant: sPlant,
-                        costCenter: sCostCenter
+                        oRouter.navTo("DetailView", {
+                            query: {
+                                material: sMaterial,
+                                serialNumber: sSerialNumber,
+                                plant: sPlant,
+                                costCenter: sCostCenter
+                            }
+                        });
                     }
+
+                    if (oData.results.length === 0) {
+                        busyDialog.close();
+                        MessageBox.error(oResourceBundle.getText("noDataFound"));
+                        return;
+                    }
+                })
+                .catch((oError) => {
+                    busyDialog.close();
+                    MessageBox.error(oError.message || oResourceBundle.getText("dataValidationError"));
                 });
-            }, 1000);
         }
     });
 });

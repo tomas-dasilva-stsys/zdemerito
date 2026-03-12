@@ -56,6 +56,10 @@
                 mode="MultiSelect"
                 items="{/piezas}"
                 selectionChange="onPiezasTableSelectionChange"
+                updateFinished="onPiezasTableUpdateFinished"
+                growingScrollToLoad="true"
+                growing="true"
+                sticky="ColumnHeaders"
             >
                 <columns>
                     <!-- Cant. Recup. -->
@@ -123,32 +127,48 @@
                         <cells>
                             <!-- Cant. Recup. input -->
                             <Input
-                                value="{cantRecup}"
+                                value="{menge}"
                                 type="Number"
-                                change="onCantRecupInputChange"
+                                change="onMengeInputChange"
                             />
 
                             <!-- Concepto Clas. -->
                             <Text text="{conceptoClas}" />
 
                             <!-- Pos -->
-                            <Text text="{pos}" />
+                            <Text text="{rspos}" />
 
                             <!-- Componente -->
-                            <Text text="{componente}" />
+                            <Text text="{matnr_2}" />
 
                             <!-- Denominación Componente -->
-                            <Text text="{denominacion}" />
+                            <Text text="{maktx}" />
 
                             <!-- Cantidad -->
-                            <Text text="{cantidad}" />
+                            <Text text="{menge}" />
 
                             <!-- Um -->
-                            <Text text="{um}" />
+                            <Text text="{meins}" />
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
+            <HBox
+                justifyContent="Center"
+                alignItems="Center"
+                class="sapUiSmallMarginTop sapUiSmallMarginBottom"
+            >
+                <Button
+                    text="{i18n>loadMoreData}"
+                    type="Transparent"
+                    visible="{= ${/hasMore} === true &amp;&amp; ${/isLoading} !== true }"
+                    press=".onLoadMore"
+                />
+                <BusyIndicator
+                    visible="{/isLoading}"
+                    size="50%"
+                />
+            </HBox>
         </content>
 
         <footer>
