@@ -127,9 +127,9 @@
                         <cells>
                             <!-- Cant. Recup. input -->
                             <Input
-                                value="{menge}"
+                                value="{recoveryQty}"
                                 type="Number"
-                                change="onMengeInputChange"
+                                change="onRecoveryQtyInputChange"
                             />
 
                             <!-- Concepto Clas. -->
@@ -145,7 +145,7 @@
                             <Text text="{maktx}" />
 
                             <!-- Cantidad -->
-                            <Text text="{menge}" />
+                            <Text id="idMenge" text="{menge}" />
 
                             <!-- Um -->
                             <Text text="{meins}" />

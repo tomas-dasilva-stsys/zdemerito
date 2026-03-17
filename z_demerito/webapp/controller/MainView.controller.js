@@ -306,7 +306,7 @@ sap.ui.define([
 
             const aFilter = [
                 new Filter("matnr", FilterOperator.EQ, sMaterial),
-                new Filter("werk", FilterOperator.EQ, sPlant),
+                new Filter("werks", FilterOperator.EQ, sPlant),
             ];
 
             ListMaterialService.callGetService('/ListMaterialOrder', aFilter)

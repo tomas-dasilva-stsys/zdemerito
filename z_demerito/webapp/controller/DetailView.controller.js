@@ -43,7 +43,7 @@ sap.ui.define([
         _loadData: async function (sMaterial, sPlant) {
             const aFilter = [
                 new Filter("matnr", FilterOperator.EQ, sMaterial),
-                new Filter("werk", FilterOperator.EQ, sPlant)
+                new Filter("werks", FilterOperator.EQ, sPlant)
             ];
 
             this._aFilter = aFilter;
@@ -54,11 +54,15 @@ sap.ui.define([
 
             try {
                 const oData = await ListMaterialService.callGetService('/ListMaterialOrder', aFilter);
+                const finaloData = oData.results.filter(item => item.menge).map(item => ({
+                        ...item,
+                        recoveryQty: item.menge
+                    }));
 
                 this._nextLink = oData.__next || null;
 
                 this.getView().setModel(new JSONModel({
-                    piezas: oData.results,
+                    piezas: finaloData,
                     hasMore: !!oData.__next,
                     isLoading: false
                 }));
@@ -160,12 +164,22 @@ sap.ui.define([
             oSaveButton.setEnabled(aSelectedItems.length > 0);
         },
 
-        onMengeInputChange: function (oEvent) {
+        onRecoveryQtyInputChange: function (oEvent) {
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
             const oInput = oEvent.getSource();
             const sValue = oInput.getValue();
+            const mengeQty = oInput.getParent().getCells().filter(cell => cell.getId().includes("idMenge"))[0]?.getText();
+
+            if (sValue > parseFloat(mengeQty)) {
+                oInput.setValueState("Error");
+                oInput.setValueStateText(oResourceBundle.getText("recoveryQtyError"));
+                return;
+            }
 
             if (sValue) {
                 const newValue = parseFloat(sValue).toFixed(3);
+                oInput.setValueState("None");
+                oInput.setValueStateText("");
                 oInput.setValue(newValue);
             }
         },
