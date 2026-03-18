@@ -41,6 +41,7 @@ sap.ui.define([
         },
 
         _loadData: async function (sMaterial, sPlant) {
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
             const aFilter = [
                 new Filter("matnr", FilterOperator.EQ, sMaterial),
                 new Filter("werks", FilterOperator.EQ, sPlant)
@@ -55,14 +56,19 @@ sap.ui.define([
             try {
                 const oData = await ListMaterialService.callGetService('/ListMaterialOrder', aFilter);
                 const finaloData = oData.results.filter(item => item.menge).map(item => ({
-                        ...item,
-                        recoveryQty: item.menge
-                    }));
+                    ...item,
+                    recoveryQty: item.menge
+                }));
+
+                const uniqueConcepts = [...new Set(finaloData.map(item => item.sortf))];
+                const concepts = uniqueConcepts.map(concept => ({ key: concept, text: concept }));
+                const finalConcepts = [{ key: "all", text: oResourceBundle.getText("allConcepts") }, ...concepts];
 
                 this._nextLink = oData.__next || null;
 
                 this.getView().setModel(new JSONModel({
                     piezas: finaloData,
+                    concepts: finalConcepts,
                     hasMore: !!oData.__next,
                     isLoading: false
                 }));
@@ -151,7 +157,7 @@ sap.ui.define([
             }
 
             if (sSelectedKey !== "all") {
-                const oFilter = new Filter("conceptoClas", FilterOperator.EQ, sSelectedKey);
+                const oFilter = new Filter("sortf", FilterOperator.EQ, sSelectedKey);
                 oBinding.filter(oFilter);
             }
         },
@@ -166,6 +172,8 @@ sap.ui.define([
 
         onRecoveryQtyInputChange: function (oEvent) {
             const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+
+            const saveBtn = this.getView().byId("saveButton");
             const oInput = oEvent.getSource();
             const sValue = oInput.getValue();
             const mengeQty = oInput.getParent().getCells().filter(cell => cell.getId().includes("idMenge"))[0]?.getText();
@@ -173,6 +181,7 @@ sap.ui.define([
             if (sValue > parseFloat(mengeQty)) {
                 oInput.setValueState("Error");
                 oInput.setValueStateText(oResourceBundle.getText("recoveryQtyError"));
+                saveBtn.setEnabled(false);
                 return;
             }
 
@@ -181,7 +190,17 @@ sap.ui.define([
                 oInput.setValueState("None");
                 oInput.setValueStateText("");
                 oInput.setValue(newValue);
+                saveBtn.setEnabled(true);
             }
+        },
+
+        onSavePress: function () {
+            const oTable = this.getView().byId("piezasTable");
+            const aSelectedItems = oTable.getSelectedItems();
+            const aSelectedData = aSelectedItems.map(item => item.getBindingContext().getObject());
+
+            // lógica para guardar los datos seleccionados
+            console.log("Datos a guardar:", aSelectedData);
         },
 
         onNavBack() {

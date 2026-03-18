@@ -28,23 +28,14 @@
                     <Select
                         id="filterSelect"
                         change=".onFilterChange"
+                        items="{/concepts}"
                     >
-                        <core:Item
-                            key="all"
-                            text="Todos los conceptos"
-                        />
-                        <core:Item
-                            key="4050"
-                            text="4050"
-                        />
-                        <core:Item
-                            key="4060"
-                            text="4060"
-                        />
-                        <core:Item
-                            key="4080"
-                            text="4080"
-                        />
+                        <items>
+                            <core:Item
+                                key="{key}"
+                                text="{text}"
+                            />
+                        </items>
                     </Select>
                 </contentRight>
             </Bar>
@@ -68,7 +59,7 @@
                         hAlign="Center"
                     >
                         <Text
-                            text="Cant. Recup."
+                            text="{i18n>recoveryQuantity}"
                             wrapping="true"
                         />
                     </Column>
@@ -79,7 +70,7 @@
                         hAlign="Center"
                     >
                         <Text
-                            text="Concepto Clas."
+                            text="{i18n>conceptClassification}"
                             wrapping="true"
                         />
                     </Column>
@@ -89,12 +80,12 @@
                         width="5rem"
                         hAlign="Center"
                     >
-                        <Text text="Pos" />
+                        <Text text="{i18n>position}" />
                     </Column>
 
                     <!-- Componente -->
                     <Column width="9rem">
-                        <Text text="Componente" />
+                        <Text text="{i18n>component}" />
                     </Column>
 
                     <!-- Denominación Componente -->
@@ -102,7 +93,7 @@
                         minScreenWidth="Tablet"
                         demandPopin="true"
                     >
-                        <Text text="Denominación Componente" />
+                        <Text text="{i18n>componentDenomination}" />
                     </Column>
 
                     <!-- Cantidad -->
@@ -110,7 +101,7 @@
                         width="6rem"
                         hAlign="End"
                     >
-                        <Text text="Cantidad" />
+                        <Text text="{i18n>quantity}" />
                     </Column>
 
                     <!-- Um -->
@@ -118,7 +109,7 @@
                         width="4rem"
                         hAlign="Center"
                     >
-                        <Text text="Um" />
+                        <Text text="{i18n>unitMeasure}" />
                     </Column>
                 </columns>
 
@@ -133,10 +124,10 @@
                             />
 
                             <!-- Concepto Clas. -->
-                            <Text text="{conceptoClas}" />
+                            <Text text="{sortf}" />
 
                             <!-- Pos -->
-                            <Text text="{rspos}" />
+                            <Text text="{posnr}" />
 
                             <!-- Componente -->
                             <Text text="{matnr_2}" />
@@ -145,7 +136,10 @@
                             <Text text="{maktx}" />
 
                             <!-- Cantidad -->
-                            <Text id="idMenge" text="{menge}" />
+                            <Text
+                                id="idMenge"
+                                text="{menge}"
+                            />
 
                             <!-- Um -->
                             <Text text="{meins}" />
