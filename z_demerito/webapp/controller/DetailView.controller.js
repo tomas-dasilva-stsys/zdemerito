@@ -4,15 +4,19 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "zdemerito/services/ListMaterialService",
+    "zdemerito/model/AppJsonModel",
 ], (Controller,
     JSONModel,
     Filter,
     FilterOperator,
-    ListMaterialService) => {
+    ListMaterialService,
+    AppJsonModel) => {
     "use strict";
 
     return Controller.extend("zdemerito.controller.DetailView", {
         onInit() {
+            AppJsonModel.initializeModel();
+
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("DetailView").attachPatternMatched(this._onRouteMatched, this);
         },
@@ -29,6 +33,13 @@ sap.ui.define([
             this._nextLink = null;
             this._aFilter = null;
             this._isLoading = false;
+
+            this.getView().setModel(new JSONModel({
+                material: sMaterial,
+                plant: sPlant,
+                serialNumber: sSerialNumber,
+                costCenter: sCostCenter
+            }), "headerParams");
 
             // Inicializar modelo vacío para evitar datos viejos mientras carga
             this.getView().setModel(new JSONModel({
@@ -196,11 +207,29 @@ sap.ui.define([
 
         onSavePress: function () {
             const oTable = this.getView().byId("piezasTable");
+            const oHeaderModel = this.getView().getModel("headerParams");
             const aSelectedItems = oTable.getSelectedItems();
             const aSelectedData = aSelectedItems.map(item => item.getBindingContext().getObject());
 
-            // lógica para guardar los datos seleccionados
-            console.log("Datos a guardar:", aSelectedData);
+            const oParameters = {
+                matnr: oHeaderModel.getProperty("/material"),
+                werks: oHeaderModel.getProperty("/plant"),
+                costcenter: oHeaderModel.getProperty("/costCenter"),
+                serialnumber: oHeaderModel.getProperty("/serialNumber"),
+                ReturnSet: aSelectedData.map(row => {
+                    return {
+                        maktx: row.maktx,
+                        matnr: row.matnr,
+                        matnr_2: row.matnr_2,
+                        meins: row.meins,
+                        menge: row.menge,
+                        posnr: row.posnr,
+                        recoveryQty: row.recoveryQty,
+                        sortf: row.sortf,
+                        werks: row.werks
+                    }
+                }),
+            }
         },
 
         onNavBack() {
