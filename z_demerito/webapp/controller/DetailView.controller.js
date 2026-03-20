@@ -214,9 +214,9 @@ sap.ui.define([
             const oParameters = {
                 matnr: oHeaderModel.getProperty("/material"),
                 werks: oHeaderModel.getProperty("/plant"),
-                costcenter: oHeaderModel.getProperty("/costCenter"),
-                serialnumber: oHeaderModel.getProperty("/serialNumber"),
-                ReturnSet: aSelectedData.map(row => {
+                kostl: oHeaderModel.getProperty("/costCenter"),
+                sernr: oHeaderModel.getProperty("/serialNumber"),
+                to_Position: aSelectedData.map(row => {
                     return {
                         maktx: row.maktx,
                         matnr: row.matnr,
@@ -224,12 +224,18 @@ sap.ui.define([
                         meins: row.meins,
                         menge: row.menge,
                         posnr: row.posnr,
-                        recoveryQty: row.recoveryQty,
                         sortf: row.sortf,
                         werks: row.werks
                     }
                 }),
             }
+
+            ListMaterialService.callPostService('/Header', oParameters)
+                .then(({ oData, oResponse }) => {
+                    console.log({ oData, oResponse })
+                }).catch(oError => {
+                    console.log(oError)
+                })
         },
 
         onNavBack() {

@@ -43,7 +43,7 @@ sap.ui.define([], function () {
         callPostService: function (sEntity, oPayload) {
             return new Promise((res, rej) => {
                 this.getOdataModel().create(sEntity, oPayload, {
-                    success: res,
+                    success: (oData, oResponse) => res({ oData, oResponse }),
                     error: rej
                 });
             });
