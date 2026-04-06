@@ -8,6 +8,7 @@
         id="detailPage"
         title="{i18n>detailTitle}"
         navButtonPress=".onNavBack"
+        showNavButton="true"
     >
         <!-- Barra de búsqueda y filtro -->
         <subHeader>
@@ -167,6 +168,14 @@
 
         <footer>
             <Toolbar>
+                <Button
+                    id="messagePopoverBtn"
+                    icon="sap-icon://notification-2"
+                    text="{popoverModel>/messageLength}"
+                    type="{popoverModel>/type}"
+                    press=".handleMessagePopoverPress"
+                    ariaHasPopup="Dialog"
+                />
                 <ToolbarSpacer />
                 <Button
                     id="saveButton"

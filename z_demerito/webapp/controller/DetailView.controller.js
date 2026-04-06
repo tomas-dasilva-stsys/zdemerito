@@ -3,19 +3,46 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/MessagePopover",
+    "sap/m/MessageItem",
+    "sap/ui/core/routing/History",
     "zdemerito/services/ListMaterialService",
     "zdemerito/model/AppJsonModel",
 ], (Controller,
     JSONModel,
     Filter,
     FilterOperator,
+    MessagePopover,
+    MessageItem,
+    History,
     ListMaterialService,
     AppJsonModel) => {
     "use strict";
 
+    let oMessageTemplate = new MessageItem({
+        type: '{T}',
+        title: '{S}',
+    });
+
+    let oMessagePopover = new MessagePopover({
+        items: {
+            path: '/',
+            template: oMessageTemplate
+        }
+    });
+
     return Controller.extend("zdemerito.controller.DetailView", {
         onInit() {
             AppJsonModel.initializeModel();
+
+            let pop_msgModel = new JSONModel({
+                "messageLength": '',
+                "type": 'Default'
+            })
+
+            this.getView().setModel(pop_msgModel, "popoverModel");
+            let popModel = new JSONModel({});
+            oMessagePopover.setModel(popModel);
 
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("DetailView").attachPatternMatched(this._onRouteMatched, this);
@@ -201,13 +228,14 @@ sap.ui.define([
                 oInput.setValueState("None");
                 oInput.setValueStateText("");
                 oInput.setValue(newValue);
-                saveBtn.setEnabled(true);
+                // saveBtn.setEnabled(true);
             }
         },
 
         onSavePress: function () {
             const oTable = this.getView().byId("piezasTable");
             const oHeaderModel = this.getView().getModel("headerParams");
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
             const aSelectedItems = oTable.getSelectedItems();
             const aSelectedData = aSelectedItems.map(item => item.getBindingContext().getObject());
 
@@ -230,16 +258,43 @@ sap.ui.define([
                 }),
             }
 
-            ListMaterialService.callPostService('/Header', oParameters)
-                .then(({ oData, oResponse }) => {
-                    console.log({ oData, oResponse })
-                }).catch(oError => {
-                    console.log(oError)
-                })
+            let busyDialog4 = (sap.ui.getCore().byId("busy4")) ? sap.ui.getCore().byId("busy4") : new sap.m.BusyDialog('busy4', {
+                title: oResourceBundle.getText("busyText"),
+            });
+
+            busyDialog4.open();
+
+            setTimeout(() => {
+                ListMaterialService.callPostService('/Header', oParameters)
+                    .then(({ oData, oResponse }) => {
+                        oMessagePopover.getModel().setData('');
+
+                        const sapMessageInfo = JSON.parse(oResponse.headers["sap-message"]);
+                        const oMessage = sapMessageInfo.message;
+                        const severity = sapMessageInfo.severity;
+
+                        const messageData = [{
+                            T: severity === "error" ? "Error" : "Success",
+                            S: oMessage
+                        }];
+
+                        oMessagePopover.getModel().setData(messageData);
+                        oMessagePopover.getModel().refresh(true);
+                        this.getView().getModel('popoverModel').getData().messageLength = messageData.length;
+                        this.getView().getModel('popoverModel').getData().type = "Emphasized";
+                        this.getView().getModel('popoverModel').refresh(true);
+                    }).catch(oError => {
+                        console.log(oError)
+                    }).finally(() => {
+                        busyDialog4.close()
+                    })
+            }, 100);
+
         },
 
         onNavBack() {
             this._cleanUp();
+            this.clearNotifications();
 
             const oHistory = History.getInstance();
             const sPreviousHash = oHistory.getPreviousHash();
@@ -262,6 +317,17 @@ sap.ui.define([
             this._aFilter = null;
             this._isLoading = false;
             this._scrollListenerAttached = false;
+        },
+
+        clearNotifications: function () {
+            oMessagePopover.getModel().setData([]);
+            oMessagePopover.getModel().refresh(true);
+            this.getView().getModel('popoverModel').getData().messageLength = ''
+            this.getView().getModel('popoverModel').getData().type = "Default";
+            this.getView().getModel('popoverModel').refresh(true);
+        },
+        handleMessagePopoverPress: function (oEvent) {
+            oMessagePopover.toggle(oEvent.getSource());
         },
     });
 });
