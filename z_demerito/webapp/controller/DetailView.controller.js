@@ -270,7 +270,7 @@ sap.ui.define([
             busyDialog4.open();
 
             setTimeout(() => {
-                ListMaterialService.callPostService('', oParameters)
+                ListMaterialService.callPostService('/Header', oParameters)
                     .then(({ oData, oResponse }) => {
                         oMessagePopover.getModel().setData('');
 
