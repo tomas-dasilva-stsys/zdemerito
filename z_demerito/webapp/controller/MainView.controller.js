@@ -128,10 +128,29 @@ sap.ui.define([
             return matchCodeMap[sInputId] || "";
         },
 
+        setStorageMatchchodeFilters: function () {
+            let aFilters;
+
+            const plant = AppJsonModel.getProperty('/DemeritData/Plant');
+
+            if (plant) {
+                aFilters = [new Filter("werks", FilterOperator.EQ, plant)];
+            } else {
+                aFilters = [];
+            }
+
+            return aFilters;
+        },
+
         onInputValueHelpRequest: function (oEvent) {
             const currInputId = oEvent.getSource().getId().split('-').pop()
             const currMatchCodePath = this.getMatchCodePath(currInputId);
+            let aFilters;
             inputId = currInputId;
+
+            if (inputId === 'Storage') {
+                aFilters = this.setStorageMatchchodeFilters();
+            }
 
             // Lógica para mostrar el value help dependiendo del input
             this.getFragment(`${currInputId}HelpDialog`).then((oFragment) => {
@@ -152,12 +171,15 @@ sap.ui.define([
                     if (oTable.bindRows) {
                         oTable.bindAggregation("rows", {
                             path: currMatchCodePath,
+                            filters: aFilters,
                             showHeader: false
                         });
                     }
 
                     oFragment.update();
-                    oFragment._initialized = true; // marcar como listo
+                    if (inputId !== 'Storage') {
+                        oFragment._initialized = true; // marcar como listo
+                    }
                     oFragment.open();
 
                 }).catch((oError) => {
