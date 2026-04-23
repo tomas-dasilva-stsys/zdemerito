@@ -5,18 +5,20 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/MessagePopover",
     "sap/m/MessageItem",
+    "sap/m/MessageBox",
     "sap/ui/core/routing/History",
     "zdemerito/services/ListMaterialService",
     "zdemerito/model/AppJsonModel",
 ], (Controller,
-    JSONModel,
-    Filter,
-    FilterOperator,
-    MessagePopover,
-    MessageItem,
-    History,
-    ListMaterialService,
-    AppJsonModel) => {
+	JSONModel,
+	Filter,
+	FilterOperator,
+	MessagePopover,
+	MessageItem,
+	MessageBox,
+	History,
+	ListMaterialService,
+	AppJsonModel) => {
     "use strict";
 
     let oMessageTemplate = new MessageItem({
@@ -53,6 +55,7 @@ sap.ui.define([
 
             const sMaterial = oArguments?.material;
             const sPlant = oArguments?.plant;
+            const sStorage = oArguments?.storage;
             const sSerialNumber = oArguments?.serialNumber;
             const sCostCenter = oArguments?.costCenter;
 
@@ -64,6 +67,7 @@ sap.ui.define([
             this.getView().setModel(new JSONModel({
                 material: sMaterial,
                 plant: sPlant,
+                storage: sStorage,
                 serialNumber: sSerialNumber,
                 costCenter: sCostCenter
             }), "headerParams");
@@ -244,6 +248,7 @@ sap.ui.define([
                 werks: oHeaderModel.getProperty("/plant"),
                 kostl: oHeaderModel.getProperty("/costCenter"),
                 sernr: oHeaderModel.getProperty("/serialNumber"),
+                lgort: oHeaderModel.getProperty("/storage"),
                 to_Position: aSelectedData.map(row => {
                     return {
                         maktx: row.maktx,
@@ -265,7 +270,7 @@ sap.ui.define([
             busyDialog4.open();
 
             setTimeout(() => {
-                ListMaterialService.callPostService('/Header', oParameters)
+                ListMaterialService.callPostService('', oParameters)
                     .then(({ oData, oResponse }) => {
                         oMessagePopover.getModel().setData('');
 
@@ -285,11 +290,11 @@ sap.ui.define([
                         this.getView().getModel('popoverModel').refresh(true);
                     }).catch(oError => {
                         console.log(oError)
+                        MessageBox.error(oError.message || oResourceBundle.getText("dataValidationError"));
                     }).finally(() => {
                         busyDialog4.close()
                     })
             }, 100);
-
         },
 
         onNavBack() {

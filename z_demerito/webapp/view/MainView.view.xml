@@ -97,6 +97,27 @@
                             </form:fields>
                         </form:FormElement>
 
+                        <form:FormElement id="storageFormElement">
+                            <form:label>
+                                <Label
+                                    id="storageLabel"
+                                    text="{i18n>storageLabel}"
+                                    class="sapUiTinyMarginTop"
+                                    required="true"
+                                />
+                            </form:label>
+                            <form:fields>
+                                <Input
+                                    id="Storage"
+                                    value="{AppJsonModel>/DemeritData/Storage}"
+                                    change=".onInputChange"
+                                    showValueHelp="true"
+                                    valueHelpRequest="onInputValueHelpRequest"
+                                    width="50%"
+                                />
+                            </form:fields>
+                        </form:FormElement>
+
                         <form:FormElement id="costCenterFormElement">
                             <form:label>
                                 <Label

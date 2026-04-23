@@ -6,7 +6,7 @@ sap.ui.define([], function () {
             if (this._oModel) {
                 return this._oModel;
             }
-            let sPath = "/sap/opu/odata/sap/YSB_0003/";
+            let sPath = "/sap/opu/odata/sap/ZSD_DOM_UI_DEMERITO/";
             //builds model
             this._oModel = new sap.ui.model.odata.ODataModel(sPath, {
                 json: true,

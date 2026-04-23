@@ -26,15 +26,26 @@ sap.ui.define([
                     "Material": "",
                     "SerialNumber": "",
                     "Plant": "",
+                    "Storage": "",
                     "CostCenter": "",
                 },
                 "Plant": [{
-                    "label": "{i18n>plant}",
+                    "label": "{i18n>plantLabel}",
                     "template": "werks"
                 }, {
                     "label": "{i18n>name}",
                     "template": "name1"
                 }
+                ],
+                "Storage": [
+                    {
+                        "label": "{i18n>storageLabel}",
+                        "template": "lgort"
+                    },
+                    {
+                        "label": "{i18n>plantLabel}",
+                        "template": "werks"
+                    }
                 ],
                 "Material": [
                     {

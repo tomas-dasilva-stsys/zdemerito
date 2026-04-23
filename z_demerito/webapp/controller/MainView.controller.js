@@ -73,10 +73,12 @@ sap.ui.define([
 
             const materialInput = this.byId("Material");
             const plantInput = this.byId("Plant");
+            const storageInput = this.byId("Storage");
             const costCenterInput = this.byId("CostCenter");
 
             const isMaterialInputValid = materialInput.getValue().trim() !== "";
             const isPlantInputValid = plantInput.getValue().trim() !== "";
+            const isStorageInputValid = storageInput.getValue().trim() !== "";
             const isCostCenterInputValid = costCenterInput.getValue().trim() !== "";
 
             if (!isMaterialInputValid) {
@@ -87,6 +89,11 @@ sap.ui.define([
             if (!isPlantInputValid) {
                 plantInput.setValueState("Error");
                 plantInput.setValueStateText(oResourceBundle.getText("plantError"));
+            }
+
+            if (!isStorageInputValid) {
+                storageInput.setValueState("Error");
+                storageInput.setValueStateText(oResourceBundle.getText("storageError"));
             }
 
             if (!isCostCenterInputValid) {
@@ -115,6 +122,7 @@ sap.ui.define([
             const matchCodeMap = {
                 "Material": "/MatchMaterial",
                 "Plant": "/MatchWorkCenter",
+                "Storage": "/MatchStorageLocation",
                 "CostCenter": "/MatchCostCenter"
             };
             return matchCodeMap[sInputId] || "";
@@ -173,6 +181,12 @@ sap.ui.define([
 
             if (inputId === 'Plant') {
                 AppJsonModel.setInnerProperty('/DemeritData', 'Plant', currToken.getValue().werks);
+                this.byId(inputId).setValueState("None");
+                this.byId(inputId).setValueStateText("");
+            }
+
+            if (inputId === 'Storage') {
+                AppJsonModel.setInnerProperty('/DemeritData', 'Storage', currToken.getValue().lgort);
                 this.byId(inputId).setValueState("None");
                 this.byId(inputId).setValueStateText("");
             }
@@ -295,6 +309,7 @@ sap.ui.define([
 
             const sMaterial = demeritData.Material;
             const sPlant = demeritData.Plant;
+            const sStorage = demeritData.Storage;
             const sSerialNumber = demeritData.SerialNumber;
             const sCostCenter = demeritData.CostCenter;
 
@@ -320,6 +335,7 @@ sap.ui.define([
                                 material: sMaterial,
                                 serialNumber: sSerialNumber,
                                 plant: sPlant,
+                                storage: sStorage,
                                 costCenter: sCostCenter
                             }
                         });
