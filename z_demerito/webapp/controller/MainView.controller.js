@@ -9,6 +9,8 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "zdemerito/services/MatchCodeService",
     "zdemerito/services/ListMaterialService",
+    "sap/ui/comp/smartvariants/SmartVariantManagement",
+    "sap/ui/comp/smartvariants/PersonalizableInfo"
 ], (Controller,
     Filter,
     FilterOperator,
@@ -18,7 +20,9 @@ sap.ui.define([
     AppJsonModel,
     JSONModel,
     MatchCodeService,
-    ListMaterialService) => {
+    ListMaterialService,
+    SmartVariantManagement,
+    PersonalizableInfo) => {
     "use strict";
     let inputId;
 
@@ -26,6 +30,55 @@ sap.ui.define([
         onInit() {
             AppJsonModel.initializeModel();
             this.oFragments = {}; // Map para cachear fragments
+
+            const oSvm = this.byId("smartVm");
+            const oPersonalizableInfo = new PersonalizableInfo({
+                type: "Control",
+                keyName: "persistencyKey",
+                control: oSvm
+            });
+
+            oSvm.addPersonalizableControl(oPersonalizableInfo);
+            oSvm.initialise(() => {
+                this._bSvmInitialized = true;
+            }, oSvm);
+            this._registerCustomVariantHandlers(oSvm);
+
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteMainView").attachPatternMatched(this._onMainRouteMatched, this);
+        },
+
+        _onMainRouteMatched: function () {
+            // Este se dispara cada vez que volvés al main, incluso con navBack
+            if (!this._bSvmInitialized) return;
+
+            const oSvm = this.byId("smartVm");
+            const oContent = oSvm.fetchVariant();
+            if (oContent) {
+                oSvm.applyVariant(oContent);
+            }
+        },
+
+        _registerCustomVariantHandlers: function (oSmartVm) {
+            oSmartVm.fetchVariant = function () {
+                return {
+                    material: this.byId("Material").getValue(),
+                    serialNumber: this.byId("serialNumberInput").getValue(),
+                    plant: this.byId("Plant").getValue(),
+                    storage: this.byId("Storage").getValue(),
+                    costCenter: this.byId("CostCenter").getValue()
+                };
+            }.bind(this);
+
+            oSmartVm.applyVariant = function (oVariantContent) {
+                if (oVariantContent) {
+                    this.byId("Material").setValue(oVariantContent.material);
+                    this.byId("serialNumberInput").setValue(oVariantContent.serialNumber);
+                    this.byId("Plant").setValue(oVariantContent.plant);
+                    this.byId("Storage").setValue(oVariantContent.storage);
+                    this.byId("CostCenter").setValue(oVariantContent.costCenter);
+                }
+            }.bind(this);
         },
 
         getFragment: function (sFragmentName) {
@@ -110,12 +163,14 @@ sap.ui.define([
         onInputChange: function (oEvent) {
             const oInput = oEvent.getSource();
             const sValue = oInput.getValue().trim();
-            const oSVM = this.byId("idSmartVariantMgmt");
+            const oSVM = this.byId("smartVm");
 
             if (sValue !== "") {
                 oInput.setValueState("None");
                 oInput.setValueStateText("");
             }
+
+            oSVM.currentVariantSetModified(true);
         },
 
         getMatchCodePath: function (sInputId) {
@@ -194,7 +249,7 @@ sap.ui.define([
 
         onValueHelpOkPress: function (oEvent) {
             const currToken = oEvent.getParameter("tokens")[0].getCustomData()[0];
-            const oSMV = this.byId("idSmartVariantMgmt");
+            const oSMV = this.byId("smartVm");
 
             if (inputId === 'Material') {
                 AppJsonModel.setInnerProperty('/DemeritData', 'Material', currToken.getValue().matnr);
@@ -220,6 +275,7 @@ sap.ui.define([
                 this.byId(inputId).setValueStateText("");
             }
 
+            oSMV.currentVariantSetModified(true);
             this._closeValueHelpDialog(oEvent);
         },
 
@@ -351,7 +407,7 @@ sap.ui.define([
                 .then((oData) => {
                     if (oData.results.length > 0) {
                         busyDialog.close();
-                        this.destroyFragments(); // Limpiar fragments cacheados al continuar
+                        // this.destroyFragments(); // Limpiar fragments cacheados al continuar
 
                         oRouter.navTo("DetailView", {
                             query: {
