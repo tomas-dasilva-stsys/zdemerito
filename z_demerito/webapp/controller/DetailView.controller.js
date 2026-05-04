@@ -255,7 +255,7 @@ sap.ui.define([
                         matnr: row.matnr,
                         matnr_2: row.matnr_2,
                         meins: row.meins,
-                        menge: row.menge,
+                        menge: row.recoveryQty,
                         posnr: row.posnr,
                         sortf: row.sortf,
                         werks: row.werks
@@ -282,6 +282,14 @@ sap.ui.define([
                             T: severity === "error" ? "Error" : "Success",
                             S: oMessage
                         }];
+
+                        if (severity !== "error") {
+                            MessageBox.success(oMessage, {
+                                onClose: () => {
+                                    this.onNavBack();
+                                }
+                            });
+                        }
 
                         oMessagePopover.getModel().setData(messageData);
                         oMessagePopover.getModel().refresh(true);
