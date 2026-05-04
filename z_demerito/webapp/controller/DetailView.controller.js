@@ -10,15 +10,15 @@ sap.ui.define([
     "zdemerito/services/ListMaterialService",
     "zdemerito/model/AppJsonModel",
 ], (Controller,
-	JSONModel,
-	Filter,
-	FilterOperator,
-	MessagePopover,
-	MessageItem,
-	MessageBox,
-	History,
-	ListMaterialService,
-	AppJsonModel) => {
+    JSONModel,
+    Filter,
+    FilterOperator,
+    MessagePopover,
+    MessageItem,
+    MessageBox,
+    History,
+    ListMaterialService,
+    AppJsonModel) => {
     "use strict";
 
     let oMessageTemplate = new MessageItem({

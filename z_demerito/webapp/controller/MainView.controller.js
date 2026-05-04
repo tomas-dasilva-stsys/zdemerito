@@ -8,7 +8,7 @@ sap.ui.define([
     "zdemerito/model/AppJsonModel",
     "sap/ui/model/json/JSONModel",
     "zdemerito/services/MatchCodeService",
-    "zdemerito/services/ListMaterialService"
+    "zdemerito/services/ListMaterialService",
 ], (Controller,
     Filter,
     FilterOperator,
@@ -25,8 +25,7 @@ sap.ui.define([
     return Controller.extend("zdemerito.controller.MainView", {
         onInit() {
             AppJsonModel.initializeModel();
-            this._oFragments = {}; // Map para cachear fragments
-
+            this.oFragments = {}; // Map para cachear fragments
         },
 
         getFragment: function (sFragmentName) {
@@ -111,10 +110,16 @@ sap.ui.define([
         onInputChange: function (oEvent) {
             const oInput = oEvent.getSource();
             const sValue = oInput.getValue().trim();
+            const oSVM = this.byId("idSmartVariantMgmt");
 
             if (sValue !== "") {
                 oInput.setValueState("None");
                 oInput.setValueStateText("");
+                oSVM.currentVariantSetModified(true);
+            }
+
+            if (sValue === "") {
+                oSVM.currentVariantSetModified(false);
             }
         },
 
@@ -194,6 +199,7 @@ sap.ui.define([
 
         onValueHelpOkPress: function (oEvent) {
             const currToken = oEvent.getParameter("tokens")[0].getCustomData()[0];
+            const oSMV = this.byId("idSmartVariantMgmt");
 
             if (inputId === 'Material') {
                 AppJsonModel.setInnerProperty('/DemeritData', 'Material', currToken.getValue().matnr);
@@ -220,6 +226,7 @@ sap.ui.define([
             }
 
             this._closeValueHelpDialog(oEvent);
+            oSMV.currentVariantSetModified(true);
         },
 
         onValueHelpSearch: function (oEvent) {
