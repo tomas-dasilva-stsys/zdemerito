@@ -115,11 +115,6 @@ sap.ui.define([
             if (sValue !== "") {
                 oInput.setValueState("None");
                 oInput.setValueStateText("");
-                oSVM.currentVariantSetModified(true);
-            }
-
-            if (sValue === "") {
-                oSVM.currentVariantSetModified(false);
             }
         },
 
@@ -226,7 +221,6 @@ sap.ui.define([
             }
 
             this._closeValueHelpDialog(oEvent);
-            oSMV.currentVariantSetModified(true);
         },
 
         onValueHelpSearch: function (oEvent) {
