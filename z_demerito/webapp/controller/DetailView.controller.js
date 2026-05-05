@@ -79,13 +79,14 @@ sap.ui.define([
                 isLoading: false
             }));
 
-            this._loadData(sMaterial, sPlant);
+            this._loadData(sMaterial, sPlant, sSerialNumber);
         },
 
-        _loadData: async function (sMaterial, sPlant) {
+        _loadData: async function (sMaterial, sPlant, sSerialNumber) {
             const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
             const aFilter = [
                 new Filter("matnr", FilterOperator.EQ, sMaterial),
+                new Filter("sernr", FilterOperator.EQ, sSerialNumber),
                 new Filter("werks", FilterOperator.EQ, sPlant)
             ];
 

@@ -400,6 +400,7 @@ sap.ui.define([
 
             const aFilter = [
                 new Filter("matnr", FilterOperator.EQ, sMaterial),
+                new Filter("sernr", FilterOperator.EQ, sSerialNumber),
                 new Filter("werks", FilterOperator.EQ, sPlant),
             ];
 
