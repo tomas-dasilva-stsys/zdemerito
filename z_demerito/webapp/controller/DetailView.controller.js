@@ -180,14 +180,24 @@ sap.ui.define([
             const oTable = this.getView().byId("piezasTable");
             const oBinding = oTable.getBinding("items");
 
-            if (sQuery && sQuery.length > 0) {
-                const oFilter = new Filter("matnr_2", FilterOperator.Contains, sQuery);
-                oBinding.filter(oFilter);
-            }
-
             if (!sQuery || sQuery.length === 0) {
                 oBinding.filter([]);
+                return;
             }
+
+            const aValues = sQuery.split(/[\s,;]+/).map((s) => s.trim()).filter((s) => s !== "");
+
+            const aFilters = aValues.map((value) => new Filter("matnr_2", FilterOperator.Contains, value));
+            const combinedFilters = new Filter({
+                filters: aFilters,
+                and: false
+            })
+
+            oBinding.filter(combinedFilters);
+
+            /*if (sQuery && sQuery.length > 0) {
+                const oFilter = new Filter("matnr_2", FilterOperator.Contains, sQuery);
+            }*/
         },
 
         onFilterChange: function (oEvent) {
