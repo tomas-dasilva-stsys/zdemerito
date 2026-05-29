@@ -407,6 +407,13 @@ sap.ui.define([
             ListMaterialService.callGetService('/ListMaterialOrder', aFilter)
                 .then((oData) => {
                     if (oData.results.length > 0) {
+                        const errorMessage = oData.results[0].error;
+                        if (errorMessage) {
+                            busyDialog.close();
+                            MessageBox.error(errorMessage);
+                            return;
+                        }
+                        
                         busyDialog.close();
                         // this.destroyFragments(); // Limpiar fragments cacheados al continuar
 
